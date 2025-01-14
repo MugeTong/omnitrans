@@ -7,12 +7,16 @@ const createWindow = () => {
     mainWindow = new BrowserWindow({
         height: 800,
         width: 1000,
+        show: false,  // hide the window
         frame: false,  // hide the frame(Title bar)
         autoHideMenuBar: true,  // hide the menu bar
     });
     // load the window content
     mainWindow.loadURL("http://localhost:5173/").then(() => {
         console.log("Window loaded");
+    });
+    mainWindow.on('ready-to-show', () => {
+        mainWindow.show();
     });
     // open the dev tools
     // window.webContents.openDevTools();
@@ -29,4 +33,10 @@ const createWindow = () => {
 
 app.whenReady().then(() => {
     createWindow()
+});
+
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow()
+    }
 });
