@@ -5,8 +5,10 @@ let omniWindow = null;  // window for the omni box one mini translator
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
-        height: 800,
-        width: 1000,
+        height: 600,
+        width: 800,
+        minHeight: 270,
+        minWidth: 400,
         show: false,  // hide the window
         frame: false,  // hide the frame(Title bar)
         autoHideMenuBar: true,  // hide the menu bar
@@ -19,7 +21,7 @@ const createWindow = () => {
         mainWindow.show();
     });
     // open the dev tools
-    // window.webContents.openDevTools();
+    mainWindow.webContents.openDevTools();
 
     omniWindow = new BrowserWindow({
         height: 600,

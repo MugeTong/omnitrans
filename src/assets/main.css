@@ -26,4 +26,9 @@ html, body {
 
 #app {
   position: relative;
+  height: 100vh;
+  width: 100%;
+  background: #181818;
+  display: flex;
+  flex-direction: column;
 }
