@@ -1,12 +1,19 @@
 {
   "name": "omnitrans",
   "version": "0.0.0",
+  "description": "One electron app which supports searching words anytime and anywhere.",
+  "main": "main.js",
+  "author": {
+    "name": "MUGE_TONG"
+  },
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "nodemon --exec electron . --watch . --ext .html,.js,.css,.vue"
   },
   "dependencies": {
     "vue": "^3.5.13",
@@ -14,6 +21,8 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
+    "electron": "^33.3.1",
+    "nodemon": "^3.1.9",
     "vite": "^6.0.5",
     "vite-plugin-vue-devtools": "^7.6.8"
   }

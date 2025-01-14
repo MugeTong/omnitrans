@@ -1,6 +1,6 @@
-# omnitrans
+# Omnitrans
 
-This template should help get you started developing with Vue 3 in Vite.
+One electron app which supports searching words anytime and anywhere.
 
 ## Recommended IDE Setup
 
