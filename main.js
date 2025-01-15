@@ -1,4 +1,4 @@
-import {app, BrowserWindow, Tray, Menu} from 'electron';
+import {app, BrowserWindow, Tray, Menu, globalShortcut} from 'electron';
 import path from 'path';
 import {fileURLToPath} from "node:url";
 
@@ -8,10 +8,10 @@ let tray = null;  // tray icon
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DEVELOPMENT = true
-const DARK_THEME = true
+const DEVELOPMENT = true;
+const DARK_THEME = true;
 
-const mainEntrance = DEVELOPMENT ? "http://localhost:5173/" : path.join(__dirname, 'index.html')
+const mainEntrance = DEVELOPMENT ? "http://localhost:5173/" : path.join(__dirname, 'index.html');
 
 
 const createWindow = () => {
@@ -36,8 +36,13 @@ const createWindow = () => {
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();
     });
+    mainWindow.on('close', (event) => {
+        event.preventDefault();
+        mainWindow.hide();
+    })
     // open the dev tools
     mainWindow.webContents.openDevTools();
+
 
     omniWindow = new BrowserWindow({
         height: 600,
@@ -51,24 +56,32 @@ const createWindow = () => {
     tray.setToolTip('omnitrans');
     tray.setContextMenu(Menu.buildFromTemplate([
         {label: '复制应用信息', click: toggleWindow},
-        {label: '退出', click: () => app.quit()},
+        {
+            label: '退出', click: () => {
+                mainWindow.removeAllListeners('close');
+                app.quit();
+            }
+        },
     ]));
+    tray.on('click', toggleWindow);
+
 }
 
 app.whenReady().then(() => {
-    createWindow()
+    createWindow();
 });
 
 app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow()
+        createWindow();
     }
 });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit()
-    }
+app.on('will-quit', () => {
+    mainWindow = null;  // release window resource
+    omniWindow = null;
+    globalShortcut.unregisterAll();  // deregister the global shortcut
+    tray.destroy();  // remove tray icon
 });
 
 function toggleWindow() {
@@ -79,6 +92,3 @@ function toggleWindow() {
         mainWindow.focus();
     }
 }
-
-
-

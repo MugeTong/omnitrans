@@ -3,7 +3,8 @@ import {nextTick, onMounted, ref, watch} from 'vue';
 
 const ulDom = ref();
 const splitterDom = ref();
-const words = ref(['hello', 'world', 'This is a plain area to store words searched.'])
+const words = ref(['hello', 'world', 'This is a plain area to store words searched.',
+  '|','你好', '世界', '这个区域用以存放查找过的单词']);
 
 const handleWordsOverflow = () => {
   if (ulDom.value.scrollWidth > ulDom.value.clientWidth) {
@@ -26,15 +27,15 @@ onMounted(() => {
 
 
 const addWord = (word) => {
-  words.value.push(word)
+  words.value.push(word);
 }
 
 const deleteWordsHistory = () => {
-  words.value = []
+  words.value = [];
 }
 
 const searchWord = (word) => {
-  console.log(word)
+  console.log(word);
 }
 
 </script>
