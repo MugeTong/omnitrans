@@ -6,26 +6,23 @@
   <div class="title-bar drag-region">
     <img class="logo" src="@/assets/logo.svg" alt="Omnitrans Logo"/>
     <div class="title">Omnitrans</div>
-    <div class="state-bar">
-      <button class="minimize no-drag">-</button>
-      <button class="maximize no-drag">+</button>
-      <button class="close no-drag">x</button>
-    </div>
+    <div class="logo-minor"></div>
   </div>
 </template>
 
 <style scoped>
 .title-bar {
-  height: 36px;
-  background-color: #1f1f1f;
+  height: 35px;
+  background-color: #181818;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-bottom: #2b2b2b;
+  border-bottom: 1px solid #2b2b2b;
 }
-.logo {
-  height: 24px;
-  width: 24px;
+
+.logo, .logo-minor {
+  height: 20px;
+  width: 20px;
   margin: 0 10px;
 }
 
@@ -37,12 +34,13 @@
   flex: 1;
 }
 
-
-.drag-region{
+.drag-region {
   /* allow the user to drag the window by dragging on this element */
   -webkit-app-region: drag;
+  user-select: none;
 }
-.no-drag{
+
+.no-drag {
   /* prevent the user from dragging the window by dragging on this element */
   -webkit-app-region: no-drag;
 }

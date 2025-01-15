@@ -8,6 +8,11 @@ let tray = null;  // tray icon
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const DEVELOPMENT = true
+const DARK_THEME = true
+
+const mainEntrance = DEVELOPMENT ? "http://localhost:5173/" : path.join(__dirname, 'index.html')
+
 
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -16,12 +21,16 @@ const createWindow = () => {
         minHeight: 270,
         minWidth: 400,
         show: false,  // hide the window
-        frame: false,  // hide the frame(Title bar)
-        autoHideMenuBar: true,  // hide the menu bar
         backgroundColor: '#000',
+        titleBarStyle: 'hidden',
+        titleBarOverlay: {
+            color: 'rgba(0,0,0,0)',
+            height: 35,
+            symbolColor: DARK_THEME ? 'white' : 'black'
+        }
     });
     // load the window content
-    mainWindow.loadURL("http://localhost:5173/").then(() => {
+    mainWindow.loadURL(mainEntrance).then(() => {
         console.log("Window loaded");
     });
     mainWindow.on('ready-to-show', () => {
@@ -34,20 +43,16 @@ const createWindow = () => {
         height: 600,
         width: 200,
         show: false,  // hide the window
-        frame: false,  // hide the frame(Title bar)
-        autoHideMenuBar: true,  // hide the menu bar
+        titleBarStyle: 'hidden'
     });
 
 
     tray = new Tray(path.join(__dirname, 'src', 'assets', 'logo.png'));
-    const contextMenu = Menu.buildFromTemplate([
-        { label: '复制应用信息', click: () => {}},
-        { label: '显示窗口', click: () => {}},
-        { label: '退出', click: () => app.quit() },
-    ]);
-    tray.setToolTip('Electron App');
-    tray.setContextMenu(contextMenu);
-
+    tray.setToolTip('omnitrans');
+    tray.setContextMenu(Menu.buildFromTemplate([
+        {label: '复制应用信息', click: toggleWindow},
+        {label: '退出', click: () => app.quit()},
+    ]));
 }
 
 app.whenReady().then(() => {
@@ -65,3 +70,15 @@ app.on('window-all-closed', () => {
         app.quit()
     }
 });
+
+function toggleWindow() {
+    if (mainWindow.isVisible()) {
+        mainWindow.hide();
+    } else {
+        mainWindow.show();
+        mainWindow.focus();
+    }
+}
+
+
+
