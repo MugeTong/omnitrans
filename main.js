@@ -11,69 +11,78 @@ const __dirname = path.dirname(__filename);
 const DEVELOPMENT = true;
 const DARK_THEME = true;
 
+// set the window entrance path or url decided by environment
 const mainEntrance = DEVELOPMENT ? "http://localhost:5173/" : path.join(__dirname, 'index.html');
 
 
-const createWindow = () => {
+async function createWindow() {
     mainWindow = new BrowserWindow({
-        height: 600,
-        width: 1400,
-        minHeight: 270,
-        minWidth: 400,
-        show: false,  // hide the window
-        backgroundColor: '#000',
-        titleBarStyle: 'hidden',
-        titleBarOverlay: {
-            color: 'rgba(0,0,0,0)',
-            height: 35,
-            symbolColor: DARK_THEME ? 'white' : 'black'
+        height: 600,  // main window height
+        width: 800,  // main widow width
+        minHeight: 270,  // limit the min height
+        minWidth: 400,  // limit the min width
+        show: false,  // hide the window until it is ready
+        backgroundColor: 'rgba(0,0,0)',  // set app background color
+        titleBarStyle: 'hidden',  // hide the app title bar
+        titleBarOverlay: {  // make the default overlay appear
+            color: 'rgba(0,0,0,0)',  // set overlay background transparent
+            height: 35,  // same as VS Code
+            symbolColor: DARK_THEME ? 'white' : 'black'  // icon color
         }
     });
-    // load the window content
-    mainWindow.loadURL(mainEntrance).then(() => {
-        console.log("Window loaded");
-    });
+    // show the window when ready
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();
     });
+    // prevent window destruction, because we need to keep the app running
     mainWindow.on('close', (event) => {
         event.preventDefault();
         mainWindow.hide();
     })
     // open the dev tools
     mainWindow.webContents.openDevTools();
+    // load the window content
+    await mainWindow.loadURL(mainEntrance);
 
 
+    // mini window like the DeepL for portable use
     omniWindow = new BrowserWindow({
         height: 600,
         width: 200,
-        show: false,  // hide the window
-        titleBarStyle: 'hidden'
+        show: false,  // hide the window to wait for shortcut call
+        titleBarStyle: 'hidden'  // no need for title bar
     });
 
 
+    // the small icon for the system tray
     tray = new Tray(path.join(__dirname, 'src', 'assets', 'logo.png'));
-    tray.setToolTip('omnitrans');
-    tray.setContextMenu(Menu.buildFromTemplate([
+    tray.setToolTip('omnitrans');  // icon prompt
+    tray.setContextMenu(Menu.buildFromTemplate([  // right-click menu
         {label: '复制应用信息', click: toggleWindow},
         {
             label: '退出', click: () => {
+                // remove the above listener so that the app can quit normally
                 mainWindow.removeAllListeners('close');
-                app.quit();
+                app.quit();  // quit the application
             }
         },
     ]));
+    // show or hide the main window when click
     tray.on('click', toggleWindow);
-
 }
 
-app.whenReady().then(() => {
-    createWindow();
-});
+function toggleWindow() {
+    if (mainWindow.isVisible()) {
+        mainWindow.hide();
+    } else {
+        mainWindow.show();
+        mainWindow.focus();
+    }
+}
 
-app.on('activate', () => {
+app.on('activate', async () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-        createWindow();
+        await createWindow();
     }
 });
 
@@ -84,11 +93,7 @@ app.on('will-quit', () => {
     tray.destroy();  // remove tray icon
 });
 
-function toggleWindow() {
-    if (mainWindow.isVisible()) {
-        mainWindow.hide();
-    } else {
-        mainWindow.show();
-        mainWindow.focus();
-    }
-}
+// open the window when the app is ready
+app.whenReady().then(async () => {
+    await createWindow();
+});

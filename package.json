@@ -16,6 +16,7 @@
     "start": "nodemon --exec electron . --watch . --ext .html,.js,.css,.vue"
   },
   "dependencies": {
+    "pinia": "^2.3.0",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
