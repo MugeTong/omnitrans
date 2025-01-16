@@ -1,4 +1,14 @@
 <script setup>
+import {onMounted, watch} from "vue";
+import {useWordsHistoryStore} from "@/stores/words-history.js";
+
+const wordsStore = useWordsHistoryStore();
+
+onMounted(() => {
+  watch(() => wordsStore.searchSign, () => {
+    console.log(wordsStore.words[0].value);
+  });
+});
 
 </script>
 
@@ -25,7 +35,7 @@
   align-items: center;
 }
 
-.first-part, .second-part{
+.first-part, .second-part {
   height: 100%;
   width: 100%;
 }
@@ -37,6 +47,7 @@ h1 {
   margin-top: 50px;
   flex: 1;
 }
+
 .splitter {
   height: 100%;
   width: 1px;

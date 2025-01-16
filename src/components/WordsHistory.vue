@@ -1,32 +1,29 @@
 <script setup>
-import {nextTick, onMounted, ref, watch} from 'vue';
+import {onMounted, ref} from 'vue';
 import {useWordsHistoryStore} from "@/stores/words-history.js";
 
 const wordsDivDom = ref();
 const splitterDom = ref();
 const wordsStore = useWordsHistoryStore();
 
-const handleWordsOverflow = () => {
+function handleWordsOverflow() {
+  // compare the screen width and full width to toggle splitter
   const isOverflow = wordsDivDom.value.scrollWidth > wordsDivDom.value.clientWidth;
   splitterDom.value.classList.toggle('overflow', isOverflow);
 }
 
-onMounted(() => {
-  new ResizeObserver(() => {
-    handleWordsOverflow();
-  }).observe(wordsDivDom.value)
-
-  watch(() => wordsStore.wordsCount, async () => {
-    await nextTick();
-    handleWordsOverflow();
-  });
-});
-
-
+// submit the search event and add the words to the word array.
 function handleSearchClick(word) {
   wordsStore.invokeSearch();
   wordsStore.addWord(word);
 }
+
+onMounted(() => {
+  // listen the word container's width to decide whether to show the splitter
+  new ResizeObserver(() => {
+    handleWordsOverflow();
+  }).observe(wordsDivDom.value);
+});
 
 </script>
 
@@ -34,9 +31,16 @@ function handleSearchClick(word) {
   <!-- one container at the bottom to record words searched-->
   <div class="container">
     <div ref="wordsDivDom">
-      <transition-group name="fade" tag="ul" @after-leave="handleWordsOverflow">
+      <!-- add after-leave event to ensure the splitter can show normally -->
+      <transition-group
+          name="fade"
+          tag="ul"
+          @after-leave="handleWordsOverflow"
+          @after-enter="handleWordsOverflow">
         <li v-for="word in wordsStore.words" :key="`${word.id}`">
-          <button @click="handleSearchClick(word.value)">{{ word.value }}</button>
+          <button @click="handleSearchClick(word.value)">
+            {{ word.value }}
+          </button>
         </li>
       </transition-group>
     </div>
