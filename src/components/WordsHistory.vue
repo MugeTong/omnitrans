@@ -2,21 +2,21 @@
 import {nextTick, onMounted, ref, watch} from 'vue';
 import {useWordsHistoryStore} from "@/stores/words-history.js";
 
-const ulDom = ref();
+const wordsDivDom = ref();
 const splitterDom = ref();
 const wordsStore = useWordsHistoryStore();
 
 const handleWordsOverflow = () => {
-  const isOverflow = ulDom.value.scrollWidth > ulDom.value.clientWidth;
+  const isOverflow = wordsDivDom.value.scrollWidth > wordsDivDom.value.clientWidth;
   splitterDom.value.classList.toggle('overflow', isOverflow);
 }
 
 onMounted(() => {
   new ResizeObserver(() => {
     handleWordsOverflow();
-  }).observe(ulDom.value);
+  }).observe(wordsDivDom.value)
 
-  watch(() => wordsStore.words, async () => {
+  watch(() => wordsStore.wordsCount, async () => {
     await nextTick();
     handleWordsOverflow();
   });
@@ -25,7 +25,7 @@ onMounted(() => {
 
 function handleSearchClick(word) {
   wordsStore.invokeSearch();
-  wordsStore.addWord(word)
+  wordsStore.addWord(word);
 }
 
 </script>
@@ -33,11 +33,13 @@ function handleSearchClick(word) {
 <template>
   <!-- one container at the bottom to record words searched-->
   <div class="container">
-    <ul ref="ulDom">
-      <li v-for="word in wordsStore.words" :key="word">
-        <button @click="handleSearchClick(word)">{{ word }}</button>
-      </li>
-    </ul>
+    <div ref="wordsDivDom">
+      <transition-group name="fade" tag="ul" @after-leave="handleWordsOverflow">
+        <li v-for="word in wordsStore.words" :key="`${word.id}`">
+          <button @click="handleSearchClick(word.value)">{{ word.value }}</button>
+        </li>
+      </transition-group>
+    </div>
     <span class="splitter" ref="splitterDom"></span>
     <span class="del-btn">
       <button @click="wordsStore.clearWords">清空记录</button>
@@ -53,16 +55,56 @@ function handleSearchClick(word) {
   border-top: 1px solid #2b2b2b;
 }
 
-.container ul {
-  width: calc(100% - 80px);
+.container div {
+  flex: 1;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+}
+
+.container div::-webkit-scrollbar {
+  display: none;
+}
+
+.container div ul {
+  position: relative;
   list-style: none;
   padding: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  flex: 1;
-  overflow: auto;
-  scroll-behavior: smooth;
+}
+
+.container div ul li button {
+  height: 32px;
+  color: #fff;
+  margin-right: 10px;
+  padding: 3px 10px;
+  background-color: #0078d4;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  text-wrap: nowrap;
+}
+
+.fade-move,
+.fade-enter-active,
+.fade-leave-active {
+  transition: all 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* ensure the leaving dom can be deleted from the context,
+ * so that the moving animation can be calculated correctly.
+ */
+.fade-leave-active {
+  position: absolute;
 }
 
 .splitter {
@@ -73,22 +115,6 @@ function handleSearchClick(word) {
 
 .splitter.overflow {
   border-right: 1px solid #2b2b2b;
-}
-
-.container ul::-webkit-scrollbar {
-  display: none;
-}
-
-.container ul li button {
-  height: 32px;
-  color: #fff;
-  margin-right: 10px;
-  padding: 3px 10px;
-  background-color: #0078d4;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-  text-wrap: nowrap;
 }
 
 .del-btn {

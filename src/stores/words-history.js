@@ -1,9 +1,11 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {computed, ref} from "vue";
 
-export const useWordsHistoryStore = defineStore('counter', () => {
-    const words = ref(['hello', 'world', 'This is a plain area to store words searched.', '|', '你好', '世界', '这个区域用以存放查找过的单词']);
+export const useWordsHistoryStore = defineStore('words-history', () => {
+    const words = ref([]);
+    const wordsCount = computed(() => words.value.length)
     const searchSign = ref(0);
+    const Id = (i => () => i++)(0);
     const typingWord = ref('');
 
     function invokeSearch() {
@@ -11,16 +13,31 @@ export const useWordsHistoryStore = defineStore('counter', () => {
     }
 
     function addWord(word) {
-        if (words.value[0] !== word) {
-            words.value.unshift(word);
+        if (wordsCount.value === 0 || words.value[0].value !== word) {
+            words.value.unshift({id: Id(), value: word});
         }
+    }
+
+    function addWords(wordsArray) {
+        wordsArray.forEach((word) => {
+            addWord(word);
+        });
     }
 
     function clearWords() {
         words.value = [];
     }
 
+    addWords(['hello', 'world', 'This is a plain area to store words searched.', '|', '你好', '世界', '这个区域用以存放查找过的单词'].reverse());
+
     return {
-        words, searchSign, typingWord, invokeSearch, addWord, clearWords,
+        words,
+        wordsCount,
+        searchSign,
+        typingWord,
+        invokeSearch,
+        addWord,
+        addWords,
+        clearWords
     }
 });
