@@ -17,7 +17,7 @@ const mainEntrance = DEVELOPMENT ? "http://localhost:5173/" : path.join(__dirnam
 
 async function createWindow() {
     mainWindow = new BrowserWindow({
-        height: 600,  // main window height
+        height: 500,  // main window height
         width: 800,  // main widow width
         minHeight: 270,  // limit the min height
         minWidth: 400,  // limit the min width
@@ -28,6 +28,9 @@ async function createWindow() {
             color: 'rgba(0,0,0,0)',  // set overlay background transparent
             height: 35,  // same as VS Code
             symbolColor: DARK_THEME ? 'white' : 'black'  // icon color
+        },
+        webPreferences: {
+            preload: path.resolve(__dirname, "preload/index.js")
         }
     });
     // show the window when ready

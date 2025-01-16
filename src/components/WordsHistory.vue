@@ -1,17 +1,14 @@
 <script setup>
 import {nextTick, onMounted, ref, watch} from 'vue';
+import {useWordsHistoryStore} from "@/stores/words-history.js";
 
 const ulDom = ref();
 const splitterDom = ref();
-const words = ref(['hello', 'world', 'This is a plain area to store words searched.',
-  '|','你好', '世界', '这个区域用以存放查找过的单词']);
+const wordsStore = useWordsHistoryStore();
 
 const handleWordsOverflow = () => {
-  if (ulDom.value.scrollWidth > ulDom.value.clientWidth) {
-    splitterDom.value.classList.add('overflow');
-  } else {
-    splitterDom.value.classList.remove('overflow');
-  }
+  const isOverflow = ulDom.value.scrollWidth > ulDom.value.clientWidth;
+  splitterDom.value.classList.toggle('overflow', isOverflow);
 }
 
 onMounted(() => {
@@ -19,23 +16,16 @@ onMounted(() => {
     handleWordsOverflow();
   }).observe(ulDom.value);
 
-  watch(words, async () => {
+  watch(() => wordsStore.words, async () => {
     await nextTick();
     handleWordsOverflow();
   });
 });
 
 
-const addWord = (word) => {
-  words.value.push(word);
-}
-
-const deleteWordsHistory = () => {
-  words.value = [];
-}
-
-const searchWord = (word) => {
-  console.log(word);
+function handleSearchClick(word) {
+  wordsStore.invokeSearch();
+  wordsStore.addWord(word)
 }
 
 </script>
@@ -44,13 +34,13 @@ const searchWord = (word) => {
   <!-- one container at the bottom to record words searched-->
   <div class="container">
     <ul ref="ulDom">
-      <li v-for="word in words" :key="word">
-        <button @click="searchWord(word)">{{ word }}</button>
+      <li v-for="word in wordsStore.words" :key="word">
+        <button @click="handleSearchClick(word)">{{ word }}</button>
       </li>
     </ul>
     <span class="splitter" ref="splitterDom"></span>
     <span class="del-btn">
-      <button @click="deleteWordsHistory">清空记录</button>
+      <button @click="wordsStore.clearWords">清空记录</button>
     </span>
   </div>
 </template>
