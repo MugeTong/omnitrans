@@ -14,8 +14,8 @@ function handleWordsOverflow() {
 
 // submit the search event and add the words to the word array.
 function handleSearchClick(word) {
-  wordsStore.invokeSearch();
   wordsStore.addWord(word);
+  wordsStore.invokeSearch();
 }
 
 onMounted(() => {
