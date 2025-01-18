@@ -1,25 +1,40 @@
 <script setup>
-import {onMounted, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {useWordsHistoryStore} from "@/stores/words-history.js";
 
 const wordsStore = useWordsHistoryStore();
+const typingWord = defineModel("typingWord");
+const resultWord = defineModel("resultWord");
+const leftArea = ref();
+
 
 onMounted(() => {
-  watch(() => wordsStore.searchSign, () => {
-    console.log(wordsStore.words[0].value);
+  watch(() => wordsStore.searchSign, async () => {
+    typingWord.value = wordsStore.words[0].value;
+    resultWord.value = await bridge.wordSearchApi(typingWord.value);
+  });
+
+  leftArea.value.addEventListener('keydown', e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      e.target.blur();  // make the textarea lose the focus
+      wordsStore.addWord(typingWord.value);
+      wordsStore.invokeSearch();
+    }
   });
 });
+
 
 </script>
 
 <template>
   <div class="container">
     <div class="first-part">
-      <h1>Hello World!</h1>
+      <textarea v-model="typingWord" ref="leftArea"/>
     </div>
     <div class="splitter"/>
     <div class="second-part">
-      <h1>你好，世界！</h1>
+      <textarea v-model="resultWord" readonly/>
     </div>
   </div>
 </template>
@@ -40,12 +55,40 @@ onMounted(() => {
   width: 100%;
 }
 
-h1 {
-  color: #333;
-  font-size: 2em;
-  text-align: center;
-  margin-top: 50px;
-  flex: 1;
+
+textarea {
+  color: #eee;
+  font-size: 36px;
+  vertical-align: bottom;
+  background-color: rgba(0, 0, 0, 0);
+  height: 100%;
+  width: 100%;
+  resize: none;
+  border: none;
+  outline: none;
+  padding: 0 10px 0 10px;
+  cursor: default;
+}
+
+textarea::-webkit-scrollbar {
+  width: 8px; /* 滚动条宽度 */
+}
+
+textarea::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0); /* 轨道颜色 */
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background-color: #323232;
+  border-radius: 4px;
+}
+
+textarea:hover::-webkit-scrollbar-thumb {
+  background-color: #434343;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background-color: #4f4f4f;
 }
 
 .splitter {
