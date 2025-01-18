@@ -3,14 +3,19 @@
 const {ipcRenderer, contextBridge} = require("electron");
 
 async function settingSetApi(config) {
+    // pass application setting config to change the window
     const result = await ipcRenderer.invoke('on-set-setting', config);
     console.log(result);
 }
 
 async function wordSearchApi(wordValue) {
     // pass the word to Node.js to use https to search
-    console.log(`Going to search word: ${wordValue}`);
-    return await ipcRenderer.invoke('on-search-word', wordValue);
+    console.log(`Searching word: ${wordValue}`);
+    try {
+        return await ipcRenderer.invoke('on-search-word', wordValue);
+    } catch (err) {
+        throw err;
+    }
 }
 
 // expose the functions to browser

@@ -11,15 +11,21 @@ const leftArea = ref();
 onMounted(() => {
   watch(() => wordsStore.searchSign, async () => {
     typingWord.value = wordsStore.words[0].value;
-    resultWord.value = await bridge.wordSearchApi(typingWord.value);
+    try {
+      resultWord.value = await bridge.wordSearchApi(typingWord.value);
+    } catch (err) {
+      resultWord.value = "请检查当前的网络设置";
+    }
   });
 
+  // detect the "Enter" key to invoke the search
   leftArea.value.addEventListener('keydown', e => {
+    // users can press "Shift + Enter" to input a newline
     if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
+      e.preventDefault();  // prevent the newline
       e.target.blur();  // make the textarea lose the focus
-      wordsStore.addWord(typingWord.value);
-      wordsStore.invokeSearch();
+      wordsStore.addWord(typingWord.value);  // add the word to the history
+      wordsStore.invokeSearch();  // invoke the search
     }
   });
 });
