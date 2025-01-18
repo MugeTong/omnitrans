@@ -1,7 +1,7 @@
 {
   "name": "omnitrans",
   "version": "0.0.0",
-  "description": "One electron app which supports searching words anytime and anywhere.",
+  "description": "Omnitrans Application",
   "main": "main.js",
   "author": {
     "name": "MUGE_TONG"
@@ -13,7 +13,31 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "nodemon --exec electron . --watch . --ext .html,.js,.css,.vue"
+    "start": "nodemon --exec electron . --watch . --ext .html,.js,.css,.vue",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "top.trush.omnitrans",
+    "productName": "Omnitrans",
+    "directories": {
+      "output": "build"
+    },
+    "win": {
+      "target": ["nsis"],
+      "icon": "./src/assets/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./src/assets/logo.ico",
+      "uninstallerIcon": "./src/assets/logo.ico",
+      "installerHeaderIcon": "./src/assets/logo.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Omnitrans"
+    }
   },
   "dependencies": {
     "axios": "^1.7.9",
@@ -24,6 +48,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
     "electron": "^33.3.1",
+    "electron-builder": "^25.1.8",
     "nodemon": "^3.1.9",
     "vite": "^6.0.5",
     "vite-plugin-vue-devtools": "^7.6.8"

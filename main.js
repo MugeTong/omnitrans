@@ -9,11 +9,8 @@ let tray = null;  // tray icon
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const DEVELOPMENT = true;
+const ENVIRONMENT = process.env.NODE_ENV;  // get the environment
 const DARK_THEME = true;
-
-// set the window entrance path or url decided by environment
-const mainEntrance = DEVELOPMENT ? "http://localhost:5173/" : path.join(__dirname, 'index.html');
 
 
 async function createWindow() {
@@ -44,9 +41,13 @@ async function createWindow() {
         mainWindow.hide();
     })
     // open the dev tools
-    mainWindow.webContents.openDevTools();
+    if (ENVIRONMENT === 'development') mainWindow.webContents.openDevTools();
     // load the window content
-    await mainWindow.loadURL(mainEntrance);
+    if (ENVIRONMENT === 'development') {
+        await mainWindow.loadURL("http://localhost:5173/");
+    } else {
+        await mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
+    }
 
 
     // mini window like the DeepL for portable use
