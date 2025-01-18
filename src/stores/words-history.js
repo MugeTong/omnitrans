@@ -6,7 +6,6 @@ export const useWordsHistoryStore = defineStore('words-history', () => {
     const wordsCount = computed(() => words.value.length)
     const searchSign = ref(0);
     const Id = (i => () => i++)(0);
-    const typingWord = ref('');
 
     function invokeSearch() {
         searchSign.value++;
@@ -34,7 +33,6 @@ export const useWordsHistoryStore = defineStore('words-history', () => {
         words,
         wordsCount,
         searchSign,
-        typingWord,
         invokeSearch,
         addWord,
         addWords,
