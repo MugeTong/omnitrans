@@ -9,7 +9,7 @@ let tray = null;  // tray icon
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ENVIRONMENT = process.env.NODE_ENV;  // get the environment
+const ENVIRONMENT = 'development';  // get the environment
 const DARK_THEME = true;
 
 

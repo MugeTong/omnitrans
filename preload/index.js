@@ -8,11 +8,10 @@ async function settingSetApi(config) {
     console.log(result);
 }
 
-async function wordSearchApi(wordValue) {
+async function textTranslationApi(textValue) {
     // pass the word to Node.js to use https to search
-    console.log(`Searching word: ${wordValue}`);
     try {
-        return await ipcRenderer.invoke('on-search-word', wordValue);
+        return await ipcRenderer.invoke('on-translate-text', textValue);
     } catch (err) {
         throw err;
     }
@@ -21,5 +20,5 @@ async function wordSearchApi(wordValue) {
 // expose the functions to browser
 contextBridge.exposeInMainWorld('bridge', {
     settingSetApi,
-    wordSearchApi
+    textTranslationApi
 });

@@ -1,52 +1,52 @@
 <script setup>
 import {onMounted, ref} from 'vue';
-import {useWordsHistoryStore} from "@/stores/words-history.js";
+import {useSearchHistoryStore} from "@/stores/search-history.js";
 
-const wordsDivDom = ref();
+const textDom = ref();
 const splitterDom = ref();
-const wordsStore = useWordsHistoryStore();
+const historyStore = useSearchHistoryStore();
 
-function handleWordsOverflow() {
+function handleTextAreaOverflow() {
   // compare the screen width and full width to toggle splitter
-  const isOverflow = wordsDivDom.value.scrollWidth > wordsDivDom.value.clientWidth;
+  const isOverflow = textDom.value.scrollWidth > textDom.value.clientWidth;
   splitterDom.value.classList.toggle('overflow', isOverflow);
 }
 
-// submit the search event and add the words to the word array.
-function handleSearchClick(word) {
-  wordsStore.addWord(word);
-  wordsStore.invokeSearch();
+// submit the search event and add the text to the text array.
+function handleSearchClick(textValue) {
+  historyStore.addText(textValue);
+  historyStore.invokeSearch();
 }
 
 onMounted(() => {
   // listen the word container's width to decide whether to show the splitter
   new ResizeObserver(() => {
-    handleWordsOverflow();
-  }).observe(wordsDivDom.value);
+    handleTextAreaOverflow();
+  }).observe(textDom.value);
 });
 
 </script>
 
 <template>
-  <!-- one container at the bottom to record words searched-->
+  <!-- one container at the bottom to record texts searched-->
   <div class="container">
-    <div ref="wordsDivDom">
+    <div ref="textDom">
       <!-- add after-leave event to ensure the splitter can show normally -->
       <transition-group
           name="fade"
           tag="ul"
-          @after-leave="handleWordsOverflow"
-          @after-enter="handleWordsOverflow">
-        <li v-for="word in wordsStore.words" :key="`${word.id}`">
-          <button @click="handleSearchClick(word.value)">
-            {{ word.value }}
+          @after-leave="handleTextAreaOverflow"
+          @after-enter="handleTextAreaOverflow">
+        <li v-for="text in historyStore.texts" :key="`${text.id}`">
+          <button @click="handleSearchClick(text.value)">
+            {{ text.value }}
           </button>
         </li>
       </transition-group>
     </div>
     <span class="splitter" ref="splitterDom"></span>
     <span class="del-btn">
-      <button @click="wordsStore.clearWords">清空记录</button>
+      <button @click="historyStore.clearTexts">清空记录</button>
     </span>
   </div>
 </template>

@@ -1,20 +1,21 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
-import {useWordsHistoryStore} from "@/stores/words-history.js";
+import {useSearchHistoryStore} from "@/stores/search-history.js";
 
-const wordsStore = useWordsHistoryStore();
-const typingWord = defineModel("typingWord");
-const resultWord = defineModel("resultWord");
+
+const historyStore = useSearchHistoryStore();
+const typingText = defineModel("typingText");
+const resultText = defineModel("resultText");
 const leftArea = ref();
 
 
 onMounted(() => {
-  watch(() => wordsStore.searchSign, async () => {
-    typingWord.value = wordsStore.words[0].value;
+  watch(() => historyStore.searchSign, async () => {
+    typingText.value = historyStore.texts[0].value;
     try {
-      resultWord.value = await bridge.wordSearchApi(typingWord.value);
+      resultText.value = await bridge.textTranslationApi(typingText.value);
     } catch (err) {
-      resultWord.value = "请检查当前的网络设置";
+      resultText.value = "请检查当前的网络设置";
     }
   });
 
@@ -24,8 +25,8 @@ onMounted(() => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();  // prevent the newline
       e.target.blur();  // make the textarea lose the focus
-      wordsStore.addWord(typingWord.value);  // add the word to the history
-      wordsStore.invokeSearch();  // invoke the search
+      historyStore.addText(typingText.value);  // add the word to the history
+      historyStore.invokeSearch();  // invoke the search
     }
   });
 });
@@ -36,11 +37,11 @@ onMounted(() => {
 <template>
   <div class="container">
     <div class="first-part">
-      <textarea v-model="typingWord" ref="leftArea"/>
+      <textarea v-model="typingText" ref="leftArea"/>
     </div>
     <div class="splitter"/>
     <div class="second-part">
-      <textarea v-model="resultWord" readonly/>
+      <textarea v-model="resultText" readonly/>
     </div>
   </div>
 </template>
