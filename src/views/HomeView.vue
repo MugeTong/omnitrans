@@ -1,13 +1,11 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
-import {useSearchHistoryStore} from "@/stores/search-history.js";
-
+import {onMounted, ref, watch} from 'vue';
+import {useSearchHistoryStore} from '@/stores/search-history.js';
 
 const historyStore = useSearchHistoryStore();
-const typingText = defineModel("typingText", {default: ""});
-const resultText = defineModel("resultText", {default: ""});
+const typingText = defineModel('typingText', {default: ''});
+const resultText = defineModel('resultText', {default: ''});
 const leftArea = ref();
-
 
 onMounted(() => {
   watch(() => historyStore.searchSign, async () => {
@@ -15,17 +13,17 @@ onMounted(() => {
     try {
       resultText.value = await bridge.textTranslationApi(typingText.value);
     } catch (err) {
-      resultText.value = "翻译失败，请稍后再试。";
+      resultText.value = '翻译失败，请稍后再试。';
     }
   });
 
   // detect the "Enter" key to invoke the search
   leftArea.value.addEventListener('keydown', e => {
     // users can press "Shift + Enter" to input a newline
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();  // prevent the newline
       e.target.blur();  // make the textarea lose the focus
-      if (typingText.value.trim() === "") return;  // blank exclusion
+      if (typingText.value.trim() === '') return;  // blank exclusion
       historyStore.addText(typingText.value);  // add the text to the history
       historyStore.invokeSearch();  // invoke the search
     }
@@ -33,7 +31,7 @@ onMounted(() => {
 
   // when the textarea loses focus, add text to the history and invoke search
   leftArea.value.addEventListener('blur', () => {
-    if (typingText.value.trim() === "") return;  // blank exclusion
+    if (typingText.value.trim() === '') return;  // blank exclusion
     historyStore.addText(typingText.value);
     historyStore.invokeSearch();
   });

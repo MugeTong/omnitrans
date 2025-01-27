@@ -1,4 +1,4 @@
-import {globalShortcut} from "electron";
+import {globalShortcut} from 'electron';
 
 export default function registerSearchShortcut() {
 

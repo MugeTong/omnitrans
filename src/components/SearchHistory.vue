@@ -1,6 +1,6 @@
 <script setup>
 import {onMounted, ref} from 'vue';
-import {useSearchHistoryStore} from "@/stores/search-history.js";
+import {useSearchHistoryStore} from '@/stores/search-history.js';
 
 const textDom = ref();
 const splitterDom = ref();

@@ -1,7 +1,7 @@
 <script setup>
-import HomeView from "@/views/HomeView.vue";
-import TitleBar from "@/components/TitleBar.vue";
-import SearchHistory from "@/components/SearchHistory.vue";
+import HomeView from '@/views/HomeView.vue';
+import TitleBar from '@/components/TitleBar.vue';
+import SearchHistory from '@/components/SearchHistory.vue';
 
 </script>
 
