@@ -4,8 +4,8 @@ import {useSearchHistoryStore} from "@/stores/search-history.js";
 
 
 const historyStore = useSearchHistoryStore();
-const typingText = defineModel("typingText");
-const resultText = defineModel("resultText");
+const typingText = defineModel("typingText", {default: ""});
+const resultText = defineModel("resultText", {default: ""});
 const leftArea = ref();
 
 
@@ -15,7 +15,7 @@ onMounted(() => {
     try {
       resultText.value = await bridge.textTranslationApi(typingText.value);
     } catch (err) {
-      resultText.value = "请检查当前的网络设置";
+      resultText.value = "翻译失败，请稍后再试。";
     }
   });
 
@@ -25,9 +25,17 @@ onMounted(() => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();  // prevent the newline
       e.target.blur();  // make the textarea lose the focus
-      historyStore.addText(typingText.value);  // add the word to the history
+      if (typingText.value.trim() === "") return;  // blank exclusion
+      historyStore.addText(typingText.value);  // add the text to the history
       historyStore.invokeSearch();  // invoke the search
     }
+  });
+
+  // when the textarea loses focus, add text to the history and invoke search
+  leftArea.value.addEventListener('blur', () => {
+    if (typingText.value.trim() === "") return;  // blank exclusion
+    historyStore.addText(typingText.value);
+    historyStore.invokeSearch();
   });
 });
 

@@ -2,6 +2,7 @@ import {app, BrowserWindow, Tray, Menu, globalShortcut} from 'electron';
 import path from 'path';
 import {fileURLToPath} from "node:url";
 import {setupAllIpcHandler} from "./ipc/index.js"
+import {registerAllShortcuts} from "./shortcut/index.js";
 
 let mainWindow = null;  // window for the main app
 let omniWindow = null;  // window for the omni box one mini translator
@@ -102,4 +103,5 @@ app.on('will-quit', () => {
 app.whenReady().then(async () => {
     await createWindow();
     setupAllIpcHandler();  // register all ipcMain handle events
+    registerAllShortcuts();  // register all global shortcuts
 });
