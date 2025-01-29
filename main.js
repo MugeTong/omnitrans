@@ -1,8 +1,8 @@
-import {app, BrowserWindow, Tray, Menu, globalShortcut} from 'electron';
+import {app, BrowserWindow, Tray, Menu} from 'electron';
 import path from 'path';
 import {fileURLToPath} from 'node:url';
 import {setupAllIpcHandler} from './ipc/index.js';
-import {registerAllShortcuts} from './shortcut/index.js';
+import {registerAllShortcuts, deregisterAllShortcuts} from './shortcut/index.js';
 
 let mainWindow = null;  // window for the main app
 let omniWindow = null;  // window for the omni box one mini translator
@@ -56,6 +56,11 @@ async function createWindow() {
     show: false,  // hide the window to wait for shortcut call
     titleBarStyle: 'hidden',  // no need for title bar
   });
+  omniWindow.on('close', (event) => {
+    event.preventDefault();
+    omniWindow.hide();
+  });
+  // load the omni window content
 
   // the small icon for the system tray
   tray = new Tray(path.join(__dirname, 'src', 'assets', 'logo.png'));
@@ -92,7 +97,7 @@ app.on('activate', async () => {
 app.on('will-quit', () => {
   mainWindow = null;  // release window resource
   omniWindow = null;
-  globalShortcut.unregisterAll();  // deregister the global shortcut
+  deregisterAllShortcuts();  // deregister all shortcuts
   tray.destroy();  // remove tray icon
 });
 
@@ -100,5 +105,5 @@ app.on('will-quit', () => {
 app.whenReady().then(async () => {
   await createWindow();
   setupAllIpcHandler();  // register all ipcMain handle events
-  registerAllShortcuts();  // register all global shortcuts
+  registerAllShortcuts(omniWindow);  // register all global shortcuts
 });

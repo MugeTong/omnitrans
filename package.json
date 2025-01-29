@@ -1,6 +1,6 @@
 {
   "name": "omnitrans",
-  "version": "0.0.0",
+  "version": "0.2.1",
   "description": "Omnitrans Application",
   "main": "main.js",
   "author": {
@@ -23,7 +23,9 @@
       "output": "build"
     },
     "win": {
-      "target": ["nsis"],
+      "target": [
+        "nsis"
+      ],
       "icon": "./src/assets/logo.ico"
     },
     "nsis": {
