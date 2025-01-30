@@ -68,6 +68,9 @@ onMounted(() => {
   width: 100%;
 }
 
+.first-part textarea:focus {
+  border: 2px solid rgba(0, 120, 212, 1);
+}
 
 textarea {
   color: #eee;
@@ -77,7 +80,7 @@ textarea {
   height: 100%;
   width: 100%;
   resize: none;
-  border: none;
+  border: 2px solid rgba(0, 0, 0, 0);
   outline: none;
   padding: 0 10px 0 10px;
   cursor: default;

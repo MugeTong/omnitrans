@@ -16,4 +16,12 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  build: {
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        omni: fileURLToPath(new URL('./omni.html', import.meta.url)),
+      },
+    },
+  },
 });

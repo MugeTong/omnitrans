@@ -40,7 +40,13 @@ class TranslateEngine {
       return result;
     } else {
       /** @namespace response.data.msg */
-      console.error('Error in accessing youdao api', response.data.msg);
+      const errorCode = response.data.errorCode;
+      console.error('Error in accessing youdao api', response.data);
+      if (errorCode === 103) {
+        return '内容过长，请尝试分段翻译。';
+      } else if (errorCode === 411) {
+        return '请求频率过快，请稍后再试。';
+      }
       return response.data.msg || 'Translation failed';
     }
   }

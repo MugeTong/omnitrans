@@ -3,26 +3,31 @@ import {fileURLToPath} from 'node:url';
 import path from 'path';
 
 let exeProcess = null;
+let clipboardUpdateTimeLast = 0;  // last clipboard update time
+// Define the listener process path
+const cwdPath = process.env.ENVIRONMENT === 'development'
+    ? path.dirname(fileURLToPath(import.meta.url))
+    : path.join(process.resourcesPath, 'scripts');
 
 export function registerSearchShortcut(omniWindow) {
+
   // check the platform
   if (process.platform === 'win32') {
     // create one process for the clipboard listener as the shortcut event
-    spawn('clipboardListener.exe', [], {
-      // set the current working directory,
-      // and there is no need to pipe the output
-      cwd: path.dirname(fileURLToPath(import.meta.url)),
-    }).stdout.on('data', (_) => {
-      // show the omni window
-      omniWindow.show();
-      // focus on the omni window
-      omniWindow.focus();
+    // there is no need to pipe the output
+    exeProcess = spawn('clipboardListener.exe', [], {cwd: cwdPath});
+
+    exeProcess.stdout.on('data', async (_) => {
+      // check the clipboard update time
+      if (Date.now() - clipboardUpdateTimeLast < 1000) {
+        omniWindow.show();
+        omniWindow.focus();
+      }
+      clipboardUpdateTimeLast = Date.now();
     });
-  }
-  if (process.platform === 'darwin') {
+  } else if (process.platform === 'darwin') {
     throw new Error('Not implemented yet');
-  }
-  if (process.platform === 'linux') {
+  } else if (process.platform === 'linux') {
     throw new Error('Not implemented yet');
   }
 }

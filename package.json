@@ -22,20 +22,32 @@
     "directories": {
       "output": "build"
     },
+    "extraFiles": [
+    ],
+    "extraResources": [
+      {
+        "from": "./shortcut",
+        "to": "./scripts",
+        "filter": [
+          "*.exe"
+        ]
+      }
+    ],
+    "files": ["!src", "!.vscode", "!docs"],
     "win": {
       "target": [
         "nsis"
       ],
-      "icon": "./src/assets/logo.ico"
+      "icon": "./public/logo.ico"
     },
     "nsis": {
       "oneClick": false,
       "perMachine": true,
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "installerIcon": "./src/assets/logo.ico",
-      "uninstallerIcon": "./src/assets/logo.ico",
-      "installerHeaderIcon": "./src/assets/logo.ico",
+      "installerIcon": "./public/logo.ico",
+      "uninstallerIcon": "./public/logo.ico",
+      "installerHeaderIcon": "./public/logo.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Omnitrans"
