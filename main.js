@@ -96,6 +96,7 @@ async function createTray() {
     {
       label: '退出', click: () => {
         // remove the above listener so that the app can quit normally
+        omniWindow.removeAllListeners('close');
         mainWindow.removeAllListeners('close');
         app.quit();  // quit the application
       },
