@@ -1,6 +1,6 @@
 {
   "name": "omnitrans",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Omnitrans Application",
   "main": "main.js",
   "author": {
@@ -13,8 +13,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "nodemon --exec electron . --watch . --ext .html,.js,.css,.vue",
-    "pack": "electron-builder --dir"
+    "start": "cross-env NODE_ENV=development nodemon --exec electron . --watch . --ext .html,.js,.css,.vue",
+    "pack": "cross-env NODE_ENV=production electron-builder --dir"
   },
   "build": {
     "appId": "top.trush.omnitrans",
@@ -22,8 +22,6 @@
     "directories": {
       "output": "build"
     },
-    "extraFiles": [
-    ],
     "extraResources": [
       {
         "from": "./shortcut",
@@ -33,7 +31,11 @@
         ]
       }
     ],
-    "files": ["!src", "!.vscode", "!docs"],
+    "files": [
+      "!src",
+      "!.vscode",
+      "!docs"
+    ],
     "win": {
       "target": [
         "nsis"
@@ -55,16 +57,17 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
-    "pinia": "^2.3.0",
+    "pinia": "^2.3.1",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
-    "electron": "^33.3.1",
+    "cross-env": "^7.0.3",
+    "electron": "^33.3.2",
     "electron-builder": "^25.1.8",
     "nodemon": "^3.1.9",
-    "vite": "^6.0.5",
-    "vite-plugin-vue-devtools": "^7.6.8"
+    "vite": "^6.0.11",
+    "vite-plugin-vue-devtools": "^7.7.1"
   }
 }

@@ -7,7 +7,7 @@ let clipboardUpdateTimeLast = 0;  // last clipboard update time
 
 export function registerSearchShortcut(omniWindow) {
   // Define the listener process path
-  const cwdPath = process.env.ENVIRONMENT === 'development'
+  const cwdPath = process.env.NODE_ENV === 'development'
       ? path.dirname(fileURLToPath(import.meta.url))
       : path.join(process.resourcesPath, 'scripts');
 

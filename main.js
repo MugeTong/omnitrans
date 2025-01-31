@@ -10,7 +10,6 @@ let tray = null;  // tray icon
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-process.env.ENVIRONMENT = 'development';  // set the environment
 // const DARK_THEME = nativeTheme.shouldUseDarkColors;  // get the theme
 const DARK_THEME = true;  // get the theme
 
@@ -42,9 +41,9 @@ async function createMainWindow() {
     mainWindow.hide();
   });
   // open the dev tools
-  if (process.env.ENVIRONMENT === 'development') mainWindow.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'development') mainWindow.webContents.openDevTools();
   // load the window content
-  if (process.env.ENVIRONMENT === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     await mainWindow.loadURL('http://localhost:5173/');
   } else {
     await mainWindow.loadFile(path.join(__dirname, 'dist/index.html'));
@@ -76,9 +75,9 @@ async function createOmniWindow() {
     omniWindow.minimize();
   });
   // open the dev tools
-  if (process.env.ENVIRONMENT === 'development') omniWindow.webContents.openDevTools();
+  if (process.env.NODE_ENV === 'development') omniWindow.webContents.openDevTools();
   // load the omni window content
-  if (process.env.ENVIRONMENT === 'development') {
+  if (process.env.NODE_ENV === 'development') {
     await omniWindow.loadURL('http://localhost:5173/omni.html');
   } else {
     await omniWindow.loadFile(path.join(__dirname, 'dist/omni.html'));
