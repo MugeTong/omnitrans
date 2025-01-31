@@ -1,6 +1,6 @@
 {
   "name": "omnitrans",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "Omnitrans Application",
   "main": "main.js",
   "author": {
@@ -14,7 +14,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "cross-env NODE_ENV=development nodemon --exec electron . --watch . --ext .html,.js,.css,.vue",
-    "pack": "cross-env NODE_ENV=production electron-builder --dir"
+    "pack": "cross-env NODE_ENV=production electron-builder"
   },
   "build": {
     "appId": "top.trush.omnitrans",

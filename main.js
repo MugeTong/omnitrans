@@ -4,6 +4,9 @@ import {fileURLToPath} from 'node:url';
 import {setupAllIpcHandler} from './ipc/index.js';
 import {registerAllShortcuts, deregisterAllShortcuts} from './shortcut/index.js';
 
+// prevent the app from running multiple instances
+if (!app.requestSingleInstanceLock()) app.quit();
+
 let mainWindow = null;  // window for the main app
 let omniWindow = null;  // window for the omni box one mini translator
 let tray = null;  // tray icon
@@ -112,6 +115,15 @@ function toggleWindow() {
     mainWindow.focus();
   }
 }
+
+// prevent the new instance and show the first instance main window
+app.on('second-instance', () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) mainWindow.restore();
+    mainWindow.show();
+    mainWindow.focus();
+  }
+});
 
 app.on('activate', async () => {
   if (BrowserWindow.getAllWindows().length === 0) {
