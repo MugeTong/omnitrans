@@ -23,10 +23,16 @@ function OmniWindowResizeApi(deltaHeight, deltaWidth) {
   ipcRenderer.send('omniWindow:resize', deltaHeight, deltaWidth);
 }
 
+function OmniWindowCloseApi() {
+  // submit the close event to close the omni window
+  ipcRenderer.send('omniWindow:close');
+}
+
 // expose the functions to browser
 contextBridge.exposeInMainWorld('bridge', {
   settingSetApi,
   textTranslationApi,
   OmniWindowGetSizeApi,
   OmniWindowResizeApi,
+  OmniWindowCloseApi,
 });

@@ -3,8 +3,8 @@ import {onMounted, ref, watch} from 'vue';
 import {useSearchHistoryStore} from '@/stores/search-history.js';
 
 const historyStore = useSearchHistoryStore();
-const typingText = defineModel('typingText', {default: ''});
-const resultText = defineModel('resultText', {default: ''});
+const typingText = defineModel('typingText', {type: String, default: ''});
+const resultText = defineModel('resultText', {type: String, default: ''});
 const leftArea = ref();
 
 onMounted(() => {
@@ -87,11 +87,11 @@ textarea {
 }
 
 textarea::-webkit-scrollbar {
-  width: 8px; /* 滚动条宽度 */
+  width: 8px; /* scrollbar width */
 }
 
 textarea::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0); /* 轨道颜色 */
+  background: rgba(0, 0, 0, 0); /* track color */
 }
 
 textarea::-webkit-scrollbar-thumb {

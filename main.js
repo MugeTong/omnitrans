@@ -54,9 +54,9 @@ async function createMainWindow() {
 async function createOmniWindow() {
   // mini window like the DeepL for portable use
   omniWindow = new BrowserWindow({
-    height: 212,
-    width: 432,
-    // show: false,  // hide the window to wait for shortcut call
+    height: 262,
+    width: 482,
+    show: false,  // hide the window to wait for shortcut call
     titleBarStyle: 'hidden',  // no need for title bar
     alwaysOnTop: true,  // always on top
     transparent: true,  // transparent background
@@ -66,16 +66,14 @@ async function createOmniWindow() {
       preload: path.resolve(__dirname, 'preload/index.js'),
     },
   });
-  omniWindow.on('ready-to-show', () => {
-    omniWindow.show();
-    omniWindow.focus();
+  omniWindow.on('blur', () => {
+    // minimize the window instead of hiding to keep the animation more smoothly
+    omniWindow.minimize();
   });
-  // omniWindow.on('blur', () => {
-  //   omniWindow.hide();
-  // });
   omniWindow.on('close', (event) => {
     event.preventDefault();
-    omniWindow.hide();
+    // minimize the window instead of hiding to keep the animation more smoothly
+    omniWindow.minimize();
   });
   // open the dev tools
   if (process.env.ENVIRONMENT === 'development') omniWindow.webContents.openDevTools();

@@ -20,8 +20,9 @@ export function registerSearchShortcut(omniWindow) {
     exeProcess.stdout.on('data', async (_) => {
       // check the clipboard update time
       if (Date.now() - clipboardUpdateTimeLast < 1000) {
-        omniWindow.show();
-        omniWindow.focus();
+        setTimeout(() => {
+          omniWindow.show();
+        }, 100);
       }
       clipboardUpdateTimeLast = Date.now();
     });

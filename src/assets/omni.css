@@ -34,7 +34,7 @@ html, body {
     height: calc(100vh - 32px);
     width: calc(100% - 32px);
     border-radius: 10px;
-    padding: 16px;
+    padding: 8px 16px 16px 16px;
     box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.089),
     3px 2px 2px rgba(0, 0, 0, 0.112),
     6px 4px 4px rgba(0, 0, 0, 0.123),
