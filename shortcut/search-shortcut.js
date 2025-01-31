@@ -4,12 +4,12 @@ import path from 'path';
 
 let exeProcess = null;
 let clipboardUpdateTimeLast = 0;  // last clipboard update time
-// Define the listener process path
-const cwdPath = process.env.ENVIRONMENT === 'development'
-    ? path.dirname(fileURLToPath(import.meta.url))
-    : path.join(process.resourcesPath, 'scripts');
 
 export function registerSearchShortcut(omniWindow) {
+  // Define the listener process path
+  const cwdPath = process.env.ENVIRONMENT === 'development'
+      ? path.dirname(fileURLToPath(import.meta.url))
+      : path.join(process.resourcesPath, 'scripts');
 
   // check the platform
   if (process.platform === 'win32') {

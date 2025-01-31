@@ -1,15 +1,14 @@
 <script setup>
-import TitleBar from '@/components/TitleBar.vue';
 
 const startResize = async (event) => {
   const initialX = event.clientX;
   const initialY = event.clientY;
-  await bridge.OmniWindowGetSizeApi();
+  bridge.OmniWindowGetSizeApi();
 
   const onMouseMove = async (moveEvent) => {
     const deltaX = moveEvent.clientX - initialX;
     const deltaY = moveEvent.clientY - initialY;
-    await bridge.OmniWindowResizeApi(deltaY, deltaX);
+    bridge.OmniWindowResizeApi(deltaY, deltaX);
   };
 
   const onMouseUp = () => {
@@ -23,19 +22,44 @@ const startResize = async (event) => {
 </script>
 
 <template>
-  <title-bar/>
-  <svg class="resize-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-       @mousedown="startResize">
-    <path
-        d="m985.33333,986.8718l-189.33335,0l0,-189.94874l189.33335,0l0,189.94874m0,-379.89745l-189.33335,0l0,-189.94872l189.33335,0l0,189.94872m-378.66667,379.89745l-189.33333,0l0,-189.94874l189.33333,0l0,189.94874m0,-379.89745l-189.33333,0l0,-189.94872l189.33333,0l0,189.94872m-378.66667,379.89745l-189.33333,0l0,-189.94874l189.33333,0l0,189.94874m757.33335,-759.79491l-189.33335,0l0,-189.94872l189.33335,0l0,189.94872z"/>
-  </svg>
-
+  <div class="container">
+    <div class="title-bar">
+      <img class="logo" src="/logo.svg" alt="Omnitrans Logo"/>
+    </div>
+  </div>
+  <img class="resize-icon" src="/resize.svg" alt="Resize" draggable="false" @mousedown="startResize"/>
 </template>
 
 <style scoped>
-.resize-icon {
-  cursor: se-resize;
+.container {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  border: 1px solid #2b2b2b;
 }
 
+.title-bar {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logo {
+  height: 20px;
+  width: 20px;
+  margin: 0 10px;
+}
+
+.resize-icon {
+  position: absolute;
+  left: calc(100% - 16px - 4px);
+  top: calc(100% - 16px - 4px);
+  padding-right: 16px;
+  padding-bottom: 16px;
+  cursor: se-resize;
+  -webkit-app-region: no-drag;
+}
 
 </style>

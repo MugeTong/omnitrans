@@ -4,7 +4,7 @@
 
 <template>
   <div class="title-bar drag-region">
-    <img class="logo" src="../../public/logo.svg" alt="Omnitrans Logo"/>
+    <img class="logo" src="/logo.svg" alt="Omnitrans Logo"/>
     <div class="title">Omnitrans</div>
     <div class="logo-minor"></div>
   </div>

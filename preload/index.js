@@ -13,14 +13,14 @@ async function textTranslationApi(textValue) {
   return await ipcRenderer.invoke('on-translate-text', textValue);
 }
 
-async function OmniWindowGetSizeApi() {
+function OmniWindowGetSizeApi() {
   // submit the resize event to resize the omni window dynamically
-  return await ipcRenderer.invoke('omniWindow:get-size');
+  ipcRenderer.send('omniWindow:get-size');
 }
 
-async function OmniWindowResizeApi(deltaHeight, deltaWidth) {
+function OmniWindowResizeApi(deltaHeight, deltaWidth) {
   // submit the resize event to resize the omni window dynamically
-  return await ipcRenderer.invoke('omniWindow:resize', deltaHeight, deltaWidth);
+  ipcRenderer.send('omniWindow:resize', deltaHeight, deltaWidth);
 }
 
 // expose the functions to browser

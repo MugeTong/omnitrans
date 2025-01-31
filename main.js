@@ -56,7 +56,7 @@ async function createOmniWindow() {
   omniWindow = new BrowserWindow({
     height: 212,
     width: 432,
-    show: false,  // hide the window to wait for shortcut call
+    // show: false,  // hide the window to wait for shortcut call
     titleBarStyle: 'hidden',  // no need for title bar
     alwaysOnTop: true,  // always on top
     transparent: true,  // transparent background
@@ -70,9 +70,9 @@ async function createOmniWindow() {
     omniWindow.show();
     omniWindow.focus();
   });
-  omniWindow.on('blur', () => {
-    omniWindow.hide();
-  });
+  // omniWindow.on('blur', () => {
+  //   omniWindow.hide();
+  // });
   omniWindow.on('close', (event) => {
     event.preventDefault();
     omniWindow.hide();
@@ -101,6 +101,7 @@ async function createTray() {
       },
     },
   ]));
+
   // show or hide the main window when click
   tray.on('click', toggleWindow);
 }

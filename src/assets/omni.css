@@ -39,8 +39,9 @@ html, body {
     3px 2px 2px rgba(0, 0, 0, 0.112),
     6px 4px 4px rgba(0, 0, 0, 0.123),
     9px 6px 6px rgba(0, 0, 0, 0.13);
-    background: red;
+    background: #f5f5f5;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    -webkit-app-region: drag;
 }
