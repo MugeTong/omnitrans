@@ -28,6 +28,13 @@ function OmniWindowCloseApi() {
   ipcRenderer.send('omniWindow:close');
 }
 
+function OnOmniWindowShow(callback) {
+  // submit the search event to search the text in the omni window
+  ipcRenderer.on('omniWindow:show-to-search', async () => {
+    await callback();
+  });
+}
+
 // expose the functions to browser
 contextBridge.exposeInMainWorld('bridge', {
   settingSetApi,
@@ -35,4 +42,5 @@ contextBridge.exposeInMainWorld('bridge', {
   OmniWindowGetSizeApi,
   OmniWindowResizeApi,
   OmniWindowCloseApi,
+  OnOmniWindowShow,
 });

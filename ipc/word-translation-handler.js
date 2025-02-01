@@ -46,6 +46,8 @@ class TranslateEngine {
         return '内容过长，请尝试分段翻译。';
       } else if (errorCode === 411) {
         return '请求频率过快，请稍后再试。';
+      } else if (errorCode === '113') {
+        return '未在剪切板中找到有效文本。';
       }
       return response.data.msg || 'Translation failed';
     }

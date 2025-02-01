@@ -143,5 +143,4 @@ onMounted(() => {
   font-weight: bold;
   background-color: #ff5449;
 }
-
 </style>

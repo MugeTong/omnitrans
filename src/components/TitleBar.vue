@@ -44,5 +44,4 @@
   /* prevent the user from dragging the window by dragging on this element */
   -webkit-app-region: no-drag;
 }
-
 </style>

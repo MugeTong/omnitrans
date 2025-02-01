@@ -1,4 +1,4 @@
-import {app, BrowserWindow, Tray, Menu} from 'electron';
+import {app, BrowserWindow, Tray, Menu, nativeTheme, clipboard} from 'electron';
 import path from 'path';
 import {fileURLToPath} from 'node:url';
 import {setupAllIpcHandler} from './ipc/index.js';
@@ -13,8 +13,7 @@ let tray = null;  // tray icon
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-// const DARK_THEME = nativeTheme.shouldUseDarkColors;  // get the theme
-const DARK_THEME = true;  // get the theme
+const DARK_THEME = nativeTheme.shouldUseDarkColors;  // get the theme
 
 async function createMainWindow() {
   mainWindow = new BrowserWindow({
@@ -28,7 +27,7 @@ async function createMainWindow() {
     titleBarOverlay: {  // make the default overlay appear
       color: 'rgba(0,0,0,0)',  // set overlay background transparent
       height: 35,  // same as VS Code
-      symbolColor: DARK_THEME ? 'white' : 'black',  // icon color
+      symbolColor: 'white',  // icon color
     },
     webPreferences: {
       preload: path.resolve(__dirname, 'preload/index.js'),
@@ -68,6 +67,12 @@ async function createOmniWindow() {
       preload: path.resolve(__dirname, 'preload/index.js'),
     },
   });
+  omniWindow.on('show', () => {
+    // send translate event to the renderer process
+    setTimeout(() => {
+      omniWindow.webContents.send('omniWindow:show-to-search');
+    }, 100);
+  });
   omniWindow.on('blur', () => {
     // minimize the window instead of hiding to keep the animation more smoothly
     omniWindow.minimize();
@@ -93,6 +98,13 @@ async function createTray() {
   tray.setToolTip('omnitrans');  // icon prompt
   tray.setContextMenu(Menu.buildFromTemplate([  // right-click menu
     {label: `复制应用信息：Omnitrans ${app.getVersion()}`, click: toggleWindow},
+    {
+      label: '显示小窗口', click: () => {
+        // force the omni window to appear, add the clipboard content as signal
+        clipboard.writeText('force the small window to appear');
+        omniWindow.show();
+      },
+    },
     {
       label: '退出', click: () => {
         // remove the above listener so that the app can quit normally

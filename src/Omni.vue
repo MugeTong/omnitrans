@@ -1,4 +1,5 @@
 <script setup>
+import {onMounted} from 'vue';
 
 const omniText = defineModel('omniText', {type: String, default: ''});
 
@@ -24,6 +25,7 @@ const startResize = async (event) => {
 };
 
 const closeWindow = () => {
+  // invoke close the window api
   bridge.OmniWindowCloseApi();
 };
 
@@ -32,6 +34,14 @@ const copyResult = () => {
   closeWindow();
 };
 
+onMounted(() => {
+  // listen to the omni window `show` event to search text in clipboard
+  bridge.OnOmniWindowShow(async () => {
+    //read text from the clipboard
+    const text = await navigator.clipboard.readText();
+    omniText.value = await bridge.textTranslationApi(text);
+  });
+});
 </script>
 
 <template>
@@ -93,8 +103,8 @@ const copyResult = () => {
 
 
   img {
-    height: 100%;
-    width: 100%
+    height: 70%;
+    width: 70%
   }
 }
 
@@ -175,5 +185,4 @@ textarea::-webkit-scrollbar-thumb:hover {
   cursor: se-resize;
   -webkit-app-region: no-drag;
 }
-
 </style>
