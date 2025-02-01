@@ -1,29 +1,30 @@
 # Omnitrans
 
-One electron app which supports searching words anytime and anywhere.
+One electron app which supports searching words anytime and anywhere. (Only supports windows now.)
 
-## Recommended IDE Setup
+<img src="docs/main_window.png" alt="img.png" style="zoom:50%;" />
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## Quick Start
 
-## Customize configuration
+Download the latest package and install it.
+You can search any English text or Chinese text you see on the screen **Just By Precessing `Ctrl+C+C`**.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Development
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
+Fork this repository and install the necessary packages. Then run the following commands:
 
 ```sh
-npm run dev
+npm run dev  # start the Vue service in one terminal
+npm start  # start the electron in another terminal
 ```
 
-### Compile and Minify for Production
+## Production
+
+Run the following commands to pack the application:
 
 ```sh
-npm run build
+npm run build  # compile the Vue files
+npm run pack  # pack the electron app using electron-builder
 ```
+
+After this, the `installer.exe` should be in your `./build` folder.
