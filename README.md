@@ -7,7 +7,7 @@ One electron app which supports searching words anytime and anywhere. (Only supp
 ## Quick Start
 
 Download the latest package and install it.
-You can search any English text or Chinese text you see on the screen **Just By Precessing `Ctrl+C+C`**.
+You can search any English text or Chinese text you see on the screen **Just By Pressing `Ctrl+C+C`**.
 
 ## Development
 
