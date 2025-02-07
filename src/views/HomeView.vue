@@ -73,10 +73,8 @@ onMounted(() => {
 }
 
 textarea {
-  color: #eee;
   font-size: 36px;
   vertical-align: bottom;
-  background-color: rgba(0, 0, 0, 0);
   height: 100%;
   width: 100%;
   resize: none;
@@ -86,30 +84,15 @@ textarea {
   cursor: default;
 }
 
-textarea::-webkit-scrollbar {
-  width: 8px; /* scrollbar width */
-}
-
-textarea::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0); /* track color */
-}
-
-textarea::-webkit-scrollbar-thumb {
-  background-color: #323232;
-  border-radius: 4px;
-}
-
-textarea:hover::-webkit-scrollbar-thumb {
-  background-color: #434343;
-}
-
-textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #4f4f4f;
-}
-
 .splitter {
   height: 100%;
   width: 1px;
-  background-color: #2b2b2b;
+  background-color: #e5e5e5;
+}
+
+.dark {
+  .splitter {
+    background-color: #2b2b2b;
+  }
 }
 </style>

@@ -35,6 +35,13 @@ function OnOmniWindowShow(callback) {
   });
 }
 
+function OnThemeChange(callback) {
+  // submit the theme event to change the theme of the omni and main window
+  ipcRenderer.on('theme', (event, theme) => {
+    callback(theme);
+  });
+}
+
 // expose the functions to browser
 contextBridge.exposeInMainWorld('bridge', {
   settingSetApi,
@@ -43,4 +50,5 @@ contextBridge.exposeInMainWorld('bridge', {
   OmniWindowResizeApi,
   OmniWindowCloseApi,
   OnOmniWindowShow,
+  OnThemeChange,
 });

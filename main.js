@@ -35,7 +35,13 @@ async function createMainWindow() {
   });
   // show the window when ready
   mainWindow.on('ready-to-show', () => {
+    // set the theme to the renderer process
+    mainWindow.webContents.send('theme', DARK_THEME ? 'dark' : 'light');
     mainWindow.show();
+    // listen to the theme change event
+    nativeTheme.on('updated', () => {
+      mainWindow.webContents.send('theme', nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
+    });
   });
   // prevent window destruction, because we need to keep the app running
   mainWindow.on('close', (event) => {
@@ -67,6 +73,14 @@ async function createOmniWindow() {
       preload: path.resolve(__dirname, 'preload/index.js'),
     },
   });
+  omniWindow.on('ready-to-show', () => {
+    // send the theme to the renderer process
+    omniWindow.webContents.send('theme', DARK_THEME ? 'dark' : 'light');
+    nativeTheme.on('updated', () => {
+      omniWindow.webContents.send('theme', nativeTheme.shouldUseDarkColors ? 'dark' : 'light');
+    });
+  });
+  // show the window when ready
   omniWindow.on('show', () => {
     // send translate event to the renderer process
     setTimeout(() => {

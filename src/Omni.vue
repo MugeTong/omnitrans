@@ -39,7 +39,7 @@ onMounted(() => {
   bridge.OnOmniWindowShow(async () => {
     //read text from the clipboard
     const text = await navigator.clipboard.readText();
-    omniText.value = await bridge.textTranslationApi(text);
+    omniText.value = await bridge.textTranslationApi(text.trim());
   });
 });
 </script>
@@ -122,29 +122,9 @@ textarea.omni-result {
   border: 1px solid #cccccc;
   font-size: 16px;
   color: #0d0d0d;
+  background-color: #ffffff;
   outline: none;
   -webkit-app-region: no-drag;
-}
-
-textarea::-webkit-scrollbar {
-  width: 8px; /* scrollbar width */
-}
-
-textarea::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0); /* track color */
-}
-
-textarea::-webkit-scrollbar-thumb {
-  background-color: #dddddd;
-  border-radius: 4px;
-}
-
-textarea:hover::-webkit-scrollbar-thumb {
-  background-color: #c8c8c8;
-}
-
-textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #929292;
 }
 
 .option-bar {
@@ -184,5 +164,18 @@ textarea::-webkit-scrollbar-thumb:hover {
   padding-bottom: 16px;
   cursor: se-resize;
   -webkit-app-region: no-drag;
+}
+
+.dark {
+  textarea {
+    background-color: #303030;
+    border-color: #303030;
+    color: #ececec;
+  }
+
+  .resize-icon {
+    filter: invert(1);
+  }
+
 }
 </style>

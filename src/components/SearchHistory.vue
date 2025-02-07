@@ -56,7 +56,7 @@ onMounted(() => {
   padding: 5px 10px;
   width: 100%;
   display: flex;
-  border-top: 1px solid #2b2b2b;
+  border-top: 1px solid #e5e5e5;
 }
 
 .container div {
@@ -114,11 +114,11 @@ onMounted(() => {
 .splitter {
   height: 100%;
   width: 5px;
-  border-right: 1px solid #2b2b2b00;
+  border-right: 1px solid #e5e5e500;
 }
 
 .splitter.overflow {
-  border-right: 1px solid #2b2b2b;
+  border-right: 1px solid #e5e5e5;
 }
 
 .del-btn {
@@ -131,9 +131,9 @@ onMounted(() => {
   height: 32px;
   padding: 5px 10px;
   background-color: rgba(55, 55, 55, 0);
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(0, 0, 0, 0.8);
   border-radius: 16px;
-  border: 1px solid #2b2b2b;
+  border: 1px solid #e5e5e5;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -142,5 +142,25 @@ onMounted(() => {
   color: #ffe;
   font-weight: bold;
   background-color: #ff5449;
+}
+
+.dark {
+  .container {
+    border-top: 1px solid #2b2b2b;
+
+  }
+
+  .splitter {
+    border-right: 1px solid #2b2b2b00;
+  }
+
+  .splitter.overflow {
+    border-right: 1px solid #2b2b2b;
+  }
+
+  .del-btn button {
+    border: 1px solid #2b2b2b;
+    color: rgba(255, 255, 255, 0.8);
+  }
 }
 </style>
