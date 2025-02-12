@@ -4,13 +4,13 @@ import {createApp} from 'vue';
 import {createPinia} from 'pinia';
 import App from '@/App.vue';
 import router from '@/router';
-import Notification from '@/components/Notification';
+import OmniNotification from 'omni-notification';
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
-app.use(Notification);
+app.use(OmniNotification);
 
 app.mount('#app');
 
