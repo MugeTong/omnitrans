@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, Tray } from "electron";
+import { app, BrowserWindow, clipboard, Menu, Tray } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { registerIpcHandlers, deregisterIpcHandlers } from "./backend";
@@ -6,6 +6,7 @@ import { registerIpcHandlers, deregisterIpcHandlers } from "./backend";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 let mainWindow: BrowserWindow;
+let omniWindow: BrowserWindow;
 let tray: Tray;
 
 async function createMainWindow() {
@@ -47,6 +48,41 @@ async function createMainWindow() {
   }
 }
 
+async function createOminiWindow() {
+  omniWindow = new BrowserWindow({
+    height: 262,
+    width: 482,
+    show: false,
+    titleBarStyle: "hidden",
+    alwaysOnTop: true,
+    transparent: true,
+    skipTaskbar: true,
+    webPreferences: {
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+
+  omniWindow.on("show", () => {
+    omniWindow.webContents.send("omni:show");
+  });
+
+  omniWindow.on("blur", () => {
+    omniWindow.hide();
+  });
+
+  omniWindow.on("close", (event) => {
+    event.preventDefault();
+    omniWindow.minimize();
+  });
+
+  if (app.isPackaged) {
+    omniWindow.loadFile(path.join(__dirname, "omni.html"));
+  } else {
+    omniWindow.loadURL(process.env.VITE_DEV_SERVER_URL! + "omni.html");
+    omniWindow.webContents.openDevTools();
+  }
+}
+
 async function createTray() {
   const trayIconPath = app.isPackaged ? path.join(__dirname, "logo.png") : path.join(__dirname, "../public/logo.png");
   tray = new Tray(trayIconPath);
@@ -57,19 +93,34 @@ async function createTray() {
         label: "Reload the main window",
         click: () => {
           mainWindow.reload();
+          mainWindow.show();
           console.log("[system] Main window reloaded.");
+        },
+      },
+      {
+        label: "Show Omni Window",
+        click: () => {
+          // force the omni window to appear, add the clipboard content as signal
+          clipboard.writeText("Force the small window to appear.");
+          omniWindow.show();
+          omniWindow.show();
         },
       },
       {
         label: "Quit OmniTrans",
         click: () => {
-          mainWindow.removeAllListeners("close");
           console.log("[system] Quitting application.");
+          mainWindow.removeAllListeners("close");
+          omniWindow.removeAllListeners("close");
           app.quit();
         },
       },
     ]),
   );
+
+  tray.on('click', () => {
+    mainWindow.show();
+  });
 }
 
 function registerAppEvents() {
@@ -91,11 +142,10 @@ function registerAppEvents() {
   app.on("will-quit", () => {
     deregisterIpcHandlers();
     mainWindow.destroy();
+    omniWindow.destroy();
     tray.destroy();
   });
-
 }
-
 
 function main() {
   registerAppEvents();
@@ -103,6 +153,7 @@ function main() {
   app.whenReady().then(async () => {
     registerIpcHandlers();
     await createMainWindow();
+    await createOminiWindow();
     await createTray();
   });
 }

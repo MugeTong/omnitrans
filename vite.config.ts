@@ -11,13 +11,13 @@ export default defineConfig({
     vue(),
     electron({
       main: {
-        entry: "index.ts",
+        entry: "main.ts",
         vite: {
           build: {
             outDir: "out",
             rollupOptions: {
               output: {
-                entryFileNames: "index.js",
+                entryFileNames: "main.js",
               },
             },
           },
@@ -47,5 +47,11 @@ export default defineConfig({
   build: {
     outDir: "out",
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL("./index.html", import.meta.url)),
+        omni: fileURLToPath(new URL("./omni.html", import.meta.url)),
+      },
+    },
   },
 });

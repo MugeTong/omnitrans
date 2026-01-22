@@ -10,7 +10,7 @@
     "name": "MUGE_TONG",
     "email": "here5320@gmail.com"
   },
-  "main": "out/index.js",
+  "main": "out/main.js",
   "napi": {
     "binaryName": "rust",
     "targets": [
@@ -21,7 +21,9 @@
     "dev": "run-p watch:vue-electron watch:rust",
     "watch:vue-electron": "vite",
     "watch:rust": "napi build --watch --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
-    "build": "run-p type-check \"build-only {@}\" --",
+    "build": "run-p build:rust build:render",
+    "build:render": "run-p type-check \"build-only {@}\" --",
+    "build:rust": "napi build --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit"
   },
