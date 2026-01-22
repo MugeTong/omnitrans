@@ -1,7 +1,7 @@
 import { app, BrowserWindow, Menu, Tray } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { registerIpcHandlers } from "./backend";
+import { registerIpcHandlers, deregisterIpcHandlers } from "./backend";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -89,6 +89,7 @@ function registerAppEvents() {
   });
 
   app.on("will-quit", () => {
+    deregisterIpcHandlers();
     mainWindow.destroy();
     tray.destroy();
   });
