@@ -1,0 +1,10 @@
+[package]
+name = "native"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = "3"
+napi-derive = "3"
