@@ -1,1 +1,1 @@
-console.log("[preload] scripts loadedasdf.");
+console.log("[preload] scripts loaded.");

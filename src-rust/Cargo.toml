@@ -8,3 +8,6 @@ crate-type = ["cdylib"]
 [dependencies]
 napi = "3"
 napi-derive = "3"
+
+[build]
+target-dir = "../target"
