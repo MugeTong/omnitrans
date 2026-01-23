@@ -18,8 +18,8 @@
     ]
   },
   "scripts": {
-    "dev": "run-p watch:vue-electron watch:rust",
-    "watch:vue-electron": "vite",
+    "dev": "run-s build:rust watch:render",
+    "watch:render": "vite",
     "watch:rust": "napi build --watch --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
     "build": "run-p build:rust build:render",
     "build:render": "run-p type-check \"build-only {@}\" --",
@@ -28,6 +28,7 @@
     "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "axios": "^1.13.2",
     "pinia": "^3.0.4",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4"

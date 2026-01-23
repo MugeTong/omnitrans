@@ -62,9 +62,9 @@ async function createOminiWindow() {
     },
   });
 
-  omniWindow.on("show", () => {
-    omniWindow.webContents.send("omni:show");
-  });
+  // omniWindow.on("show", () => {
+  //   omniWindow.webContents.send("omni:show");
+  // });
 
   omniWindow.on("blur", () => {
     omniWindow.hide();
@@ -90,7 +90,14 @@ async function createTray() {
   tray.setContextMenu(
     Menu.buildFromTemplate([
       {
-        label: "Reload the main window",
+        label: `复制应用信息：Omnitrans ${app.getVersion()}`,
+        click: () => {
+          clipboard.writeText(`OmniTrans ${app.getVersion()}`);
+          console.log("[system] Application info copied to clipboard.");
+        },
+      },
+      {
+        label: "重新加载主界面",
         click: () => {
           mainWindow.reload();
           mainWindow.show();
@@ -98,16 +105,14 @@ async function createTray() {
         },
       },
       {
-        label: "Show Omni Window",
+        label: "显示小窗口",
         click: () => {
-          // force the omni window to appear, add the clipboard content as signal
-          clipboard.writeText("Force the small window to appear.");
-          omniWindow.show();
+          console.log("[system] Force the omni window to appear.");
           omniWindow.show();
         },
       },
       {
-        label: "Quit OmniTrans",
+        label: "退出",
         click: () => {
           console.log("[system] Quitting application.");
           mainWindow.removeAllListeners("close");
@@ -140,7 +145,7 @@ function registerAppEvents() {
   });
 
   app.on("will-quit", () => {
-    deregisterIpcHandlers();
+    deregisterIpcHandlers(mainWindow, omniWindow);
     mainWindow.destroy();
     omniWindow.destroy();
     tray.destroy();
@@ -151,9 +156,9 @@ function main() {
   registerAppEvents();
 
   app.whenReady().then(async () => {
-    registerIpcHandlers();
     await createMainWindow();
     await createOminiWindow();
+    registerIpcHandlers(mainWindow, omniWindow);
     await createTray();
   });
 }

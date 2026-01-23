@@ -1,28 +1,191 @@
 <script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
+import { clipboard } from "electron";
 import { onMounted, onUnmounted } from "vue";
 
+onMounted(() => {});
+
+const omniText = defineModel("omniText", { type: String, default: "" });
+
+// const startResize = async (event) => {
+//   // listen to the mouse move and mouse up event to resize the window
+//   const initialX = event.clientX;
+//   const initialY = event.clientY;
+//   bridge.OmniWindowGetSizeApi();
+
+//   const onMouseMove = async (moveEvent) => {
+//     const deltaX = moveEvent.clientX - initialX;
+//     const deltaY = moveEvent.clientY - initialY;
+//     bridge.OmniWindowResizeApi(deltaY, deltaX);
+//   };
+
+//   const onMouseUp = () => {
+//     document.removeEventListener('mousemove', onMouseMove);
+//     document.removeEventListener('mouseup', onMouseUp);
+//   };
+
+//   document.addEventListener('mousemove', onMouseMove);
+//   document.addEventListener('mouseup', onMouseUp);
+// };
+
+// const closeWindow = () => {
+//   // invoke close the window api
+//   window.api.OmniWindowCloseApi();
+// };
+
+// const copyResult = () => {
+//   navigator.clipboard.writeText(omniText.value);
+//   closeWindow();
+// };
 
 onMounted(() => {
-    const unsubscribe = window.api.onOmniShow(() => {
-        console.log("Omni window is shown");
-    });
-    // Clean up the listener when the component is unmounted
-    onUnmounted(() => {
-        unsubscribe();
-    });
+  const unsubscribe = window.eventBridge.onDoubleCtrlC(async () => {
+    //read text from the clipboard
+    console.log("Detected double Ctrl+C");
+    // Because the window may not get the focus immediately
+    // It is necessary to get the clipboard from the main process
+    const text = await window.clipboardBridge.readClipboard();
+    console.log("[omni] Read text from clipboard:", text);
+    omniText.value = await window.translationBridge.translate(text.trim());
+  });
+
+  onUnmounted(() => {
+    unsubscribe();
+  });
 });
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-        This is the Omni Window
+  <div class="container">
+    <div class="title-bar">
+      <img class="logo" src="/logo.svg" alt="Omnitrans Logo" />
+      <div class="space" />
+      <!-- <button class="close-btn" @click="closeWindow"> -->
+      <button class="close-btn">
+        <img src="/close.svg" alt="Close" />
+      </button>
     </div>
-  </header>
+    <textarea class="omni-result" v-model="omniText" />
+    <div class="option-bar">
+      <button><img src="/copy.svg" alt="copy" />复制</button>
+      <div class="space" />
+    </div>
+  </div>
+  <img class="resize-icon" src="/resize.svg" alt="Resize" draggable="false" />
 </template>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.title-bar,
+.option-bar {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.logo {
+  height: 32px;
+  width: 32px;
+}
+
+.space {
+  flex: 1;
+  height: 100%;
+}
+
+.close-btn {
+  height: 100%;
+  width: 36px;
+  border: none;
+  border-radius: 5px;
+  color: #0d0d0d;
+  cursor: pointer;
+  background-color: #00000000;
+  -webkit-app-region: no-drag;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    height: 70%;
+    width: 70%;
+  }
+}
+
+.close-btn:hover {
+  background-color: #cccccc;
+}
+
+textarea.omni-result {
+  flex: 1;
+  width: 100%;
+  resize: none;
+  padding: 8px 10px 0 10px;
+  margin: 5px 0;
+  border-radius: 6px;
+  border: 1px solid #cccccc;
+  font-size: 16px;
+  color: #0d0d0d;
+  background-color: #ffffff;
+  outline: none;
+  -webkit-app-region: no-drag;
+}
+
+.option-bar {
+  height: 32px;
+  width: 100%;
+}
+
+.option-bar button {
+  background-color: #ffffff;
+  height: 100%;
+  margin: 5px 10px 0 0;
+  padding: 5px 10px;
+  text-wrap: nowrap;
+  font-size: 16px;
+  font-weight: bolder;
+  border: 1px solid #cccccc;
+  border-radius: 5px;
+  color: #0d0d0d;
+  cursor: pointer;
+  -webkit-app-region: no-drag;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    height: 80%;
+    width: 80%;
+    margin-right: 5px;
+  }
+}
+
+.resize-icon {
+  position: absolute;
+  left: calc(100% - 16px - 4px);
+  top: calc(100% - 16px - 4px);
+  padding-right: 16px;
+  padding-bottom: 16px;
+  cursor: se-resize;
+  -webkit-app-region: no-drag;
+}
+
+.dark {
+  textarea {
+    background-color: #303030;
+    border-color: #303030;
+    color: #ececec;
+  }
+
+  .resize-icon {
+    filter: invert(1);
+  }
+}
 </style>
