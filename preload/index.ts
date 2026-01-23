@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent} from "electron";
-import { read } from "fs";
 
 contextBridge.exposeInMainWorld("rustBridge", {
   listenDoubleCtrlC: async (timeout: number) => {

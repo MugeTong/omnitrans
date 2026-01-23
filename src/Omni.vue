@@ -40,7 +40,7 @@ const omniText = defineModel("omniText", { type: String, default: "" });
 onMounted(() => {
   const unsubscribe = window.eventBridge.onDoubleCtrlC(async () => {
     //read text from the clipboard
-    console.log("Detected double Ctrl+C");
+    console.log("[omni] Detected double Ctrl+C");
     // Because the window may not get the focus immediately
     // It is necessary to get the clipboard from the main process
     const text = await window.clipboardBridge.readClipboard();

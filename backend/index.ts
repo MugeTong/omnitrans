@@ -1,6 +1,6 @@
-import { registerRustIpcHandlers } from "./rust.ipc";
-import { registerTranslationIpcHandlers } from "./translation.ipc";
-import { registerClipboardIpcHandlers } from "./clipboard.ipc";
+import { registerRustIpcHandlers } from "./rust-wrapper";
+import { registerTranslationIpcHandlers } from "./translation";
+import { registerClipboardIpcHandlers } from "./clipboard";
 
 function registerIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindow: Electron.BrowserWindow) {
   registerRustIpcHandlers(mainWindow, omniWindow);

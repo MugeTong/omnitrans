@@ -1,5 +1,6 @@
-import { ipcMain } from "electron";
 import axios from "axios";
+
+// In this repo, the simplified Chinese is "zh-CN" and the English is "en"
 
 class TranslateEngine {
   engineName: string;
@@ -35,11 +36,10 @@ class TranslateEngine {
     );
     const result = response.data.translation?.[0];
     if (result) {
-      console.log(result);
       return result;
     } else {
       const errorCode = response.data.errorCode;
-      console.error("Error in accessing youdao api", response.data);
+      console.error("[translate] Error in accessing youdao api", response.data);
       if (errorCode === 103) {
         return "内容过长，请尝试分段翻译。";
       } else if (errorCode === 411) {
@@ -115,18 +115,4 @@ async function localLanguageDetectionApi(textValue: string) {
   return "zh-CN";
 }
 
-// In this repo, the simplified Chinese is "zh-CN" and the English is "en"
-const translateEngine = new TranslateEngine("youdao");
-
-function registerTranslationIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindow: Electron.BrowserWindow) {
-  ipcMain.handle("translation:translate", async (event, textValue: string) => {
-    const languageFrom = await localLanguageDetectionApi(textValue);
-    return await translateEngine.translate(textValue, languageFrom);
-  });
-
-  ipcMain.handle("translation:detectLanguage", async (event, textValue: string) => {
-    return await localLanguageDetectionApi(textValue);
-  });
-}
-
-export { registerTranslationIpcHandlers };
+export {TranslateEngine, languageDetectionApi, localLanguageDetectionApi};

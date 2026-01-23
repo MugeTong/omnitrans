@@ -8,12 +8,10 @@ function registerRustIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindow:
             console.error("[Rust IPC] Error in double ctrl+c listener:", err);
             return;
         }
-        console.log("[Rust IPC] Double Ctrl+C detected by Rust");
+        console.log("[Rust IPC] Double Ctrl+C detected by Rust.");
         // Once detected, show the omni window and notify the renderer process
         setTimeout(() => {
           omniWindow.showInactive();
-          // Force focus to ensure the blur event can be triggered later
-          omniWindow.focus();
         }, 100);
         omniWindow.webContents.send("event:double-ctrl-c");
     });

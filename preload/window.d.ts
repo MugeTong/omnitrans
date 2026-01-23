@@ -23,8 +23,8 @@ declare global {
 
     // eventBridge is use to handle mesage from the main process
     eventBridge: {
-      // onOmniShow: (callback: (...args: any[]) => void) => () => void;
-      onDoubleCtrlC: (callback: () => void) => () => void;
+      onDoubleCtrlC: (callback: (...args: any[]) => void) => () => void;
+      onEventTemplate: (callback: (...args: any[]) => void) => () => void;
     };
   }
 }
