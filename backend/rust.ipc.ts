@@ -15,7 +15,7 @@ function registerRustIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindow:
           // Force focus to ensure the blur event can be triggered later
           omniWindow.focus();
         }, 100);
-        omniWindow.webContents.send("rust:event:double-ctrl-c");
+        omniWindow.webContents.send("event:double-ctrl-c");
     });
   });
 }

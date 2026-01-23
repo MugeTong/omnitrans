@@ -1,4 +1,4 @@
-import { contextBridge, ipcRenderer, clipboard } from "electron";
+import { contextBridge, ipcRenderer, IpcRendererEvent} from "electron";
 import { read } from "fs";
 
 contextBridge.exposeInMainWorld("rustBridge", {
@@ -20,20 +20,18 @@ contextBridge.exposeInMainWorld("clipboardBridge", {
 });
 
 
-
-
 // Every eventt should be used just once in each render process
 contextBridge.exposeInMainWorld("eventBridge", {
-  // onOmniShow: (callback: (...args: any[]) => void) => {
-  //   const subscription = (_event: IpcRendererEvent, ...args: any[]) => callback(...args);
-  //   ipcRenderer.on("omni:show", subscription);
-  //   return () => ipcRenderer.removeListener("omni:show", subscription);
-  // },
-  onDoubleCtrlC: (callback: () => void) => {
-    const subscription = () => callback();
-    ipcRenderer.on("rust:event:double-ctrl-c", subscription);
-    return () => ipcRenderer.removeListener("rust:event:double-ctrl-c", subscription);
+  onDoubleCtrlC: (callback: (...args: any[]) => void) => {
+    const subscription = (_event: IpcRendererEvent, ...args: any[]) => callback(...args);
+    ipcRenderer.on("event:double-ctrl-c", subscription);
+    return () => ipcRenderer.removeListener("event:double-ctrl-c", subscription);
   },
+  onEventTemplate: (callback: (...args: any[]) => void) => {
+    const subscription = (_event: IpcRendererEvent, ...args: any[]) => callback(...args);
+    ipcRenderer.on("event:template", subscription);
+    return () => ipcRenderer.removeListener("event:template", subscription);
+  }
 });
 
 console.log("[preload] scripts loaded.");
