@@ -41,48 +41,39 @@ async function createMainWindow() {
     mainWindow.hide();
   });
 
-  nativeTheme.on("updated", () => {
-    if (!mainWindow.isDestroyed()) {
-      const shouldDarkMode = nativeTheme.shouldUseDarkColors;
-      mainWindow.setTitleBarOverlay({
-        color: shouldDarkMode ? "#202020" : "#f3f3f3",
-        symbolColor: shouldDarkMode ? "#ffffff" : "#000000",
-      });
-      // 同时更新背景色以防闪烁
-      mainWindow.setBackgroundColor(shouldDarkMode ? "#202020" : "#f3f3f3");
-    }
-  });
-
   if (app.isPackaged) {
     mainWindow.loadFile(path.join(__dirname, "index.html"));
   } else {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL!);
-    mainWindow.webContents.openDevTools();
+    // mainWindow.webContents.openDevTools();
   }
 }
 
 async function createOminiWindow() {
   omniWindow = new BrowserWindow({
-    height: 262,
-    width: 482,
+    height: 240,
+    width: 420,
     show: false,
     titleBarStyle: "hidden",
     alwaysOnTop: true,
     transparent: true,
     skipTaskbar: true,
+    resizable: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  // omniWindow.on("show", () => {
-  //   omniWindow.webContents.send("omni:show");
+  // omniWindow.on("ready-to-show", () => {
+  //   omniWindow.show();
   // });
 
   omniWindow.on("blur", () => {
-    omniWindow.hide();
+    omniWindow.minimize();
   });
 
+  // Minimize the window on close instead of closing it.
+  // Hide and show may cause window shaking issues.
   omniWindow.on("close", (event) => {
     event.preventDefault();
     omniWindow.minimize();
@@ -162,6 +153,19 @@ function registerAppEvents() {
     mainWindow.destroy();
     omniWindow.destroy();
     tray.destroy();
+  });
+
+  // Handle system theme changes
+  nativeTheme.on("updated", () => {
+    if (!mainWindow.isDestroyed()) {
+      const shouldDarkMode = nativeTheme.shouldUseDarkColors;
+      mainWindow.setTitleBarOverlay({
+        color: shouldDarkMode ? "#202020" : "#f3f3f3",
+        symbolColor: shouldDarkMode ? "#ffffff" : "#000000",
+      });
+      // Update main window background color to avoid visual glitches
+      mainWindow.setBackgroundColor(shouldDarkMode ? "#202020" : "#f3f3f3");
+    }
   });
 }
 
