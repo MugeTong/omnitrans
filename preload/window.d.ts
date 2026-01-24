@@ -17,9 +17,10 @@ declare global {
       readClipboard: () => Promise<string>;
     };
 
-    // localBridge is the bridge to access local APIs without ipc
-    // localBridge: {
-    // };
+    // windowBridge is the bridge to communicate with app windows
+    windowBridge: {
+      closeOmniWindow: () => Promise<void>;
+    };
 
     // eventBridge is use to handle mesage from the main process
     eventBridge: {

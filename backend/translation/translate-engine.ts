@@ -32,6 +32,7 @@ class TranslateEngine {
   }
 
   async fakeTranslateApi(textValue: string, sl: string) {
+    await new Promise((resolve) => setTimeout(resolve, 500));
     return "fake search result";
   }
 
