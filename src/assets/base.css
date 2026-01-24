@@ -98,6 +98,7 @@ input,
 textarea {
   font-family: inherit;
   color: var(--color-text);
+  border: 1px solid var(--color-border);
   background-color: var(--color-bg-content);
 }
 
