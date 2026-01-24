@@ -11,7 +11,7 @@ function registerRustIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindow:
         console.log("[Rust IPC] Double Ctrl+C detected by Rust.");
         // Once detected, show the omni window and notify the renderer process
         setTimeout(() => {
-          omniWindow.showInactive();
+          omniWindow.show();
         }, 100);
         omniWindow.webContents.send("event:double-ctrl-c");
     });

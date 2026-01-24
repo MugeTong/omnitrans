@@ -1,9 +1,10 @@
-import { app, BrowserWindow, clipboard, Menu, Tray } from "electron";
+import { app, BrowserWindow, clipboard, Menu, Tray, nativeTheme } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { registerIpcHandlers, deregisterIpcHandlers } from "./backend";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const darkMode = nativeTheme.shouldUseDarkColors;
 
 let mainWindow: BrowserWindow;
 let omniWindow: BrowserWindow;
@@ -16,12 +17,12 @@ async function createMainWindow() {
     minHeight: 600,
     minWidth: 960,
     show: false,
-    backgroundColor: "#202020",
+    backgroundColor: darkMode ? "#202020" : "#f3f3f3",
     titleBarStyle: "hidden",
     titleBarOverlay: {
-      color: "rgba(32,32,32,0)",
-      height: 47,
-      symbolColor: "white",
+      height: 46,
+      color: darkMode ? "#202020" : "#f3f3f3",
+      symbolColor: darkMode ? "#f3f3f3" : "#202020",
     },
     webPreferences: {
       // Because the main process and preload will be compiled before rendering,
@@ -38,6 +39,18 @@ async function createMainWindow() {
   mainWindow.on("close", (event) => {
     event.preventDefault();
     mainWindow.hide();
+  });
+
+  nativeTheme.on("updated", () => {
+    if (!mainWindow.isDestroyed()) {
+      const shouldDarkMode = nativeTheme.shouldUseDarkColors;
+      mainWindow.setTitleBarOverlay({
+        color: shouldDarkMode ? "#202020" : "#f3f3f3",
+        symbolColor: shouldDarkMode ? "#ffffff" : "#000000",
+      });
+      // 同时更新背景色以防闪烁
+      mainWindow.setBackgroundColor(shouldDarkMode ? "#202020" : "#f3f3f3");
+    }
   });
 
   if (app.isPackaged) {

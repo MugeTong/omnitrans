@@ -2,7 +2,7 @@ import {defineStore} from 'pinia';
 import {computed, ref} from 'vue';
 
 export const useSearchHistoryStore = defineStore('search-history', () => {
-  const texts = ref([]);
+  const texts = ref<{ id: number; value: string }[]>([]);
   const textsCount = computed(() => texts.value.length);
   const searchSign = ref(0);
   const Id = (i => () => i++)(0);
@@ -11,13 +11,13 @@ export const useSearchHistoryStore = defineStore('search-history', () => {
     searchSign.value++;
   }
 
-  function addText(textValue) {
+  function addText(textValue: string) {
     if (textsCount.value === 0 || texts.value[0].value !== textValue) {
-      texts.value.unshift({id: Id(), value: textValue});
+      texts.value.unshift({ id: Id(), value: textValue });
     }
   }
 
-  function addTexts(textsArray) {
+  function addTexts(textsArray: string[]) {
     textsArray.forEach((textValue) => {
       addText(textValue);
     });

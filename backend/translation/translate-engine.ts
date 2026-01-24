@@ -18,6 +18,17 @@ class TranslateEngine {
       deepL: this.deepLTranslateApi,
     };
     this.translateApi = this.engineMap[engineName];
+    console.log(`[translate] Using translation engine: ${engineName}`);
+  }
+
+  setTranslateEngine(engineName: string) {
+    if (this.engineMap[engineName]) {
+      this.engineName = engineName;
+      this.translateApi = this.engineMap[engineName];
+      console.log(`[translate] Switched translation engine to: ${engineName}`);
+    } else {
+      throw new Error(`[translate] Translation engine ${engineName} is not supported.`);
+    }
   }
 
   async fakeTranslateApi(textValue: string, sl: string) {
@@ -44,7 +55,7 @@ class TranslateEngine {
         return "内容过长，请尝试分段翻译。";
       } else if (errorCode === 411) {
         return "请求频率过快，请稍后再试。";
-      } else if (errorCode === 113) {
+      } else if (errorCode === '113') {
         return "未在剪切板中找到有效文本。";
       }
       return response.data.msg || "Translation failed";
