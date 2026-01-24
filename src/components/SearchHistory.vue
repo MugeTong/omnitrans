@@ -1,19 +1,18 @@
-<script setup>
+<script setup lang="ts">
 import {onMounted, ref} from 'vue';
-import {useSearchHistoryStore} from '@/stores/search-history.js';
+import {useSearchHistoryStore} from '@/stores/search-history';
 
 const textDom = ref();
-const splitterDom = ref();
+const isOverflow = ref(false);
 const historyStore = useSearchHistoryStore();
 
 function handleTextAreaOverflow() {
   // compare the screen width and full width to toggle splitter
-  const isOverflow = textDom.value.scrollWidth > textDom.value.clientWidth;
-  splitterDom.value.classList.toggle('overflow', isOverflow);
+  isOverflow.value = textDom.value.scrollWidth > textDom.value.clientWidth;
 }
 
 // submit the search event and add the text to the text array.
-function handleSearchClick(textValue) {
+function handleSearchClick(textValue: string) {
   historyStore.addText(textValue);
   historyStore.invokeSearch();
 }
@@ -29,8 +28,8 @@ onMounted(() => {
 
 <template>
   <!-- one container at the bottom to record texts searched-->
-  <div class="container">
-    <div ref="textDom">
+  <div class="serach-history-container">
+    <div class="history-content" ref="textDom">
       <!-- add after-leave event to ensure the splitter can show normally -->
       <transition-group
           name="fade"
@@ -44,7 +43,7 @@ onMounted(() => {
         </li>
       </transition-group>
     </div>
-    <span class="splitter" ref="splitterDom"></span>
+    <div class="splitter" :class="{ 'overflow': isOverflow }"></div>
     <span class="del-btn">
       <button @click="historyStore.clearTexts">清空记录</button>
     </span>
@@ -52,24 +51,24 @@ onMounted(() => {
 </template>
 
 <style scoped>
-.container {
+.serach-history-container {
   padding: 5px 10px;
   width: 100%;
   display: flex;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid var(--color-border);
 }
 
-.container div {
+.history-content {
   flex: 1;
   overflow-x: auto;
   scroll-behavior: smooth;
 }
 
-.container div::-webkit-scrollbar {
+.history-content::-webkit-scrollbar {
   display: none;
 }
 
-.container div ul {
+.history-content ul {
   position: relative;
   list-style: none;
   padding: 0;
@@ -80,11 +79,11 @@ onMounted(() => {
   flex-wrap: nowrap;
 }
 
-.container div ul li button {
+.history-content ul li button {
   height: 32px;
-  color: #fff;
   margin-right: 10px;
   padding: 3px 10px;
+  color: #ffe;
   background-color: #0078d4;
   border-radius: 16px;
   border: none;
@@ -112,13 +111,15 @@ onMounted(() => {
 }
 
 .splitter {
-  height: 100%;
-  width: 5px;
-  border-right: 1px solid #e5e5e500;
+  width: 0;
+  margin: 4px 0px 4px 4px;
+  height: calc(100% - 8px);
+  background-color: var(--color-separator);
+  border-radius: 1px;
 }
 
 .splitter.overflow {
-  border-right: 1px solid #e5e5e5;
+  width: 2px;
 }
 
 .del-btn {
@@ -130,37 +131,12 @@ onMounted(() => {
   width: 100%;
   height: 32px;
   padding: 5px 10px;
-  background-color: rgba(55, 55, 55, 0);
-  color: rgba(0, 0, 0, 0.8);
   border-radius: 16px;
-  border: 1px solid #e5e5e5;
-  cursor: pointer;
-  transition: all 0.3s;
 }
 
 .del-btn button:hover {
   color: #ffe;
   font-weight: bold;
   background-color: #ff5449;
-}
-
-.dark {
-  .container {
-    border-top: 1px solid #2b2b2b;
-
-  }
-
-  .splitter {
-    border-right: 1px solid #2b2b2b00;
-  }
-
-  .splitter.overflow {
-    border-right: 1px solid #2b2b2b;
-  }
-
-  .del-btn button {
-    border: 1px solid #2b2b2b;
-    color: rgba(255, 255, 255, 0.8);
-  }
 }
 </style>

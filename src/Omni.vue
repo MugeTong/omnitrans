@@ -1,18 +1,20 @@
-<script setup>
-import {onMounted} from 'vue';
+<script setup lang="ts">
+import { clipboard } from "electron";
+import { onMounted, onUnmounted } from "vue";
+import { ResizeIcon, CopyIcon } from "@/components/icons";
 
-const omniText = defineModel('omniText', {type: String, default: ''});
+const omniText = defineModel("omniText", { type: String, default: "" });
 
-const startResize = async (event) => {
+const onWindowResize = async (event: MouseEvent) => {
   // listen to the mouse move and mouse up event to resize the window
   const initialX = event.clientX;
   const initialY = event.clientY;
-  bridge.OmniWindowGetSizeApi();
+  const [windowWidth, windowHeight] = await window.windowBridge.getOmniWindowSize();
 
-  const onMouseMove = async (moveEvent) => {
-    const deltaX = moveEvent.clientX - initialX;
-    const deltaY = moveEvent.clientY - initialY;
-    bridge.OmniWindowResizeApi(deltaY, deltaX);
+  const onMouseMove = async (moveEvent: MouseEvent) => {
+    const newWindowWidth = moveEvent.clientX - initialX + windowWidth;
+    const newWindowHeight = moveEvent.clientY - initialY + windowHeight;
+    window.windowBridge.resizeOmniWindow(newWindowWidth, newWindowHeight);
   };
 
   const onMouseUp = () => {
@@ -24,53 +26,79 @@ const startResize = async (event) => {
   document.addEventListener('mouseup', onMouseUp);
 };
 
-const closeWindow = () => {
-  // invoke close the window api
-  bridge.OmniWindowCloseApi();
+const onCloseWindow = () => {
+  window.windowBridge.closeOmniWindow();
 };
 
-const copyResult = () => {
+const onCopyResult = () => {
+  // Copy the result to the clipboard and close the omni window
   navigator.clipboard.writeText(omniText.value);
-  closeWindow();
+  window.windowBridge.closeOmniWindow();
 };
 
 onMounted(() => {
-  // listen to the omni window `show` event to search text in clipboard
-  bridge.OnOmniWindowShow(async () => {
+  const unsubscribe = window.eventBridge.onDoubleCtrlC(async () => {
     //read text from the clipboard
-    const text = await navigator.clipboard.readText();
-    omniText.value = await bridge.textTranslationApi(text.trim());
+    console.log("[omni] Detected double Ctrl+C");
+    omniText.value = "Translating...";
+    // Because the window may not get the focus immediately
+    // It is necessary to get the clipboard from the main process
+    const text = await window.systemBridge.readClipboard();
+    console.log("[omni] Read text from clipboard:", text);
+    omniText.value = await window.translationBridge.translate(text.trim());
+  });
+
+  onUnmounted(() => {
+    unsubscribe();
   });
 });
 </script>
 
 <template>
-  <div class="container">
+  <main>
+    <!-- Resize Icon -->
+    <resize-icon class="resize-icon" @mousedown="onWindowResize" />
+
+    <!-- Title Bar -->
     <div class="title-bar">
-      <img class="logo" src="/logo.svg" alt="Omnitrans Logo"/>
-      <div class="space"/>
-      <button class="close-btn" @click="closeWindow">
-        <img src="/close.svg" alt="Close"/>
+      <img class="logo" src="/logo.svg" alt="Omnitrans Logo" />
+      <div class="space" />
+      <button class="close-btn" @click="onCloseWindow">
+        <img src="/close.svg" alt="Close" />
       </button>
     </div>
-    <textarea class="omni-result" v-model="omniText"/>
+
+    <textarea class="omni-result" v-model="omniText" />
+
     <div class="option-bar">
-      <button @click="copyResult"><img src="/copy.svg" alt="copy">复制</button>
-      <div class="space"/>
+      <button @click="onCopyResult"><copy-icon />复制</button>
+      <div class="space" />
     </div>
-  </div>
-  <img class="resize-icon" src="/resize.svg" alt="Resize" draggable="false" @mousedown="startResize"/>
+  </main>
 </template>
 
 <style scoped>
-.container {
+main {
+  height: 100%;
+  width: 100%;
+  padding: 8px;
   display: flex;
   flex-direction: column;
   flex: 1;
   width: 100%;
 }
 
-.title-bar, .option-bar {
+.resize-icon {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  cursor: se-resize;
+  color: var(--color-text-lighter);
+  -webkit-app-region: no-drag;
+}
+
+.title-bar,
+.option-bar {
   height: 36px;
   display: flex;
   align-items: center;
@@ -93,23 +121,16 @@ onMounted(() => {
   width: 36px;
   border: none;
   border-radius: 5px;
-  color: #0d0d0d;
   cursor: pointer;
-  background-color: #00000000;
   -webkit-app-region: no-drag;
   display: flex;
   justify-content: center;
   align-items: center;
 
-
   img {
     height: 70%;
-    width: 70%
+    width: 70%;
   }
-}
-
-.close-btn:hover {
-  background-color: #cccccc;
 }
 
 textarea.omni-result {
@@ -119,10 +140,7 @@ textarea.omni-result {
   padding: 8px 10px 0 10px;
   margin: 5px 0;
   border-radius: 6px;
-  border: 1px solid #cccccc;
-  font-size: 16px;
-  color: #0d0d0d;
-  background-color: #ffffff;
+  font-size: 14px;
   outline: none;
   -webkit-app-region: no-drag;
 }
@@ -133,16 +151,13 @@ textarea.omni-result {
 }
 
 .option-bar button {
-  background-color: #ffffff;
   height: 100%;
   margin: 5px 10px 0 0;
   padding: 5px 10px;
   text-wrap: nowrap;
   font-size: 16px;
   font-weight: bolder;
-  border: 1px solid #cccccc;
   border-radius: 5px;
-  color: #0d0d0d;
   cursor: pointer;
   -webkit-app-region: no-drag;
   display: flex;
@@ -154,28 +169,5 @@ textarea.omni-result {
     width: 80%;
     margin-right: 5px;
   }
-}
-
-.resize-icon {
-  position: absolute;
-  left: calc(100% - 16px - 4px);
-  top: calc(100% - 16px - 4px);
-  padding-right: 16px;
-  padding-bottom: 16px;
-  cursor: se-resize;
-  -webkit-app-region: no-drag;
-}
-
-.dark {
-  textarea {
-    background-color: #303030;
-    border-color: #303030;
-    color: #ececec;
-  }
-
-  .resize-icon {
-    filter: invert(1);
-  }
-
 }
 </style>

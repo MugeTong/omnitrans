@@ -1,74 +1,50 @@
 {
   "name": "omnitrans",
-  "version": "0.3.3",
-  "description": "Omnitrans Application",
-  "main": "main.js",
-  "author": {
-    "name": "MUGE_TONG"
-  },
-  "license": "MIT",
+  "version": "0.4.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "start": "cross-env NODE_ENV=development nodemon --exec electron . --watch . --ext .html,.js,.css,.vue",
-    "pack": "cross-env NODE_ENV=production electron-builder"
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   },
-  "build": {
-    "appId": "top.trush.omnitrans",
-    "productName": "Omnitrans",
-    "directories": {
-      "output": "build"
-    },
-    "extraResources": [
-      {
-        "from": "./shortcut",
-        "to": "./scripts",
-        "filter": [
-          "*.exe"
-        ]
-      }
-    ],
-    "files": [
-      "!src",
-      "!.vscode",
-      "!docs"
-    ],
-    "win": {
-      "target": [
-        "nsis"
-      ],
-      "icon": "./public/logo.ico"
-    },
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "./public/logo.ico",
-      "uninstallerIcon": "./public/logo.ico",
-      "installerHeaderIcon": "./public/logo.ico",
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "Omnitrans"
-    }
+  "author": {
+    "name": "MUGE_TONG",
+    "email": "here5320@gmail.com"
+  },
+  "main": "out/main.js",
+  "napi": {
+    "binaryName": "rust",
+    "targets": [
+      "x86_64-pc-windows-msvc"
+    ]
+  },
+  "scripts": {
+    "dev": "run-s build:rust watch:render",
+    "watch:render": "vite",
+    "watch:rust": "napi build --watch --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
+    "build": "run-p build:rust build:render",
+    "build:render": "run-p type-check \"build-only {@}\" --",
+    "build:rust": "napi build --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "axios": "^1.7.9",
-    "omni-notification": "^0.0.4",
-    "pinia": "^2.3.1",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "axios": "^1.13.2",
+    "pinia": "^3.0.4",
+    "vue": "^3.5.26",
+    "vue-router": "^4.6.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
-    "cross-env": "^7.0.3",
-    "electron": "^33.3.2",
-    "electron-builder": "^25.1.8",
-    "nodemon": "^3.1.9",
-    "vite": "^6.0.11",
-    "vite-plugin-vue-devtools": "^7.7.1"
+    "@tsconfig/node24": "^24.0.3",
+    "@types/electron": "^1.4.38",
+    "@types/node": "^24.10.4",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vue/tsconfig": "^0.8.1",
+    "electron": "^40.0.0",
+    "npm-run-all2": "^8.0.4",
+    "typescript": "~5.9.3",
+    "vite": "^7.3.0",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-vue-devtools": "^8.0.5",
+    "vue-tsc": "^3.2.2"
   }
 }

@@ -1,86 +1,142 @@
-:root, textarea {
-  font-family: Inter,
-  -apple-system,
-  BlinkMacSystemFont,
-  'Segoe UI',
-  Roboto,
-  Oxygen,
-  Ubuntu,
-  Cantarell,
-  'Fira Sans',
-  'Droid Sans',
-  'Helvetica Neue',
-  sans-serif;
+:root {
+  --color-bg-base: #f3f3f3;
+  --color-bg-content: #f9f9f9;
+  --color-text: #1a1a1a;
+  --color-text-lighter: #606060;
+  --color-border: #e5e5e5;
+  --color-border-hard: #d1d1da;
+  --color-btn: #fdfdfd;
+  --color-btn-hover: #eaeaea;
+  --color-separator: #eaeaea;
+  --color-text-box: #fbfbfb;
+  --color-text-box-hover: #f6f6f6;
+  --color-text-box-focus: #ffffff;
+
+  --color-accent: #005fb8;
+  --color-primary: #fed667;
+  --color-secondary: #fe6f6b;
+  --color-third: #7a92ee;
+  --color-fourth: #86e3c1;
+
+  --color-text-title: var(--color-text);
+  --color-text-menu: var(--color-text);
+  --color-text-base: var(--color-text);
+
+  --color-success: var(--color-fourth);
+  --color-failure: var(--color-secondary);
+  --color-warning: var(--color-primary);
+  --color-info: var(--color-third);
 }
 
+/* 全局样式 */
 * {
-  box-sizing: border-box;
-  margin: 0;
   padding: 0;
-  color: #000;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-html, body {
-  width: 100%;
+html {
   height: 100vh;
-  overflow: hidden;
+  font-size: 16px;
+  background-color: var(--color-bg-base);
+  color: var(--color-text);
+  border-color: var(--color-border);
 }
 
+body {
+  height: 100%;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
+  line-height: 1.6; /* 作用：行高 */
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    "Fira Sans",
+    "Droid Sans",
+    "Helvetica Neue",
+    sans-serif;
+  text-rendering: optimizeLegibility; /* 作用：字体渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (max-width: 768px) {
+  /* 自适应字体大小 */
+  /* 768px 100vw*/
+  /* 16px 100*16/768 = 2.0833333333333335vw */
+  html {
+    font-size: calc(max(12px, 2.08333vw));
+  }
+}
+
+/* Adjust different theme backgrounds */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-base: #202020;
+    --color-bg-content: #272727;
+    --color-text: #ffffff;
+    --color-text-lighter: #d1d1d1;
+    --color-border: #1d1d1d;
+    --color-btn: #343434;
+    --color-btn-hover: #2d2d2d;
+    --color-separator: #3a3a3a;
+    --color-text-box: #2d2d2d;
+
+    --color-accent: #60cdff;
+  }
+}
+
+/* Customize text area styles */
+input,
 textarea {
-  color: #222;
-  background-color: #ffffff;
+  font-family: inherit;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-content);
 }
 
-textarea::-webkit-scrollbar {
+button {
+  color: var(--color-text);
+  background-color: var(--color-btn);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: var(--color-btn-hover);
+  }
+}
+
+/* Customize the scroll bar */
+textarea::-webkit-scrollbar,
+ul::-webkit-scrollbar {
   width: 8px; /* scrollbar width */
 }
 
-textarea::-webkit-scrollbar-track {
+textarea::-webkit-scrollbar-track,
+ul::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0); /* track color */
 }
 
-textarea::-webkit-scrollbar-thumb {
-  background-color: #dddddd;
+textarea::-webkit-scrollbar-thumb,
+ul::-webkit-scrollbar-thumb {
+  background-color: #323232;
   border-radius: 4px;
 }
 
-textarea:hover::-webkit-scrollbar-thumb {
-  background-color: #c8c8c8;
+textarea:hover::-webkit-scrollbar-thumb,
+ul::-webkit-scrollbar-thumb {
+  background-color: #434343;
 }
 
-textarea::-webkit-scrollbar-thumb:hover {
-  background-color: #929292;
-}
-
-.dark {
-  /* Dark mode */
-  * {
-    color: #fff;
-  }
-
-  textarea {
-    color: #eee;
-    background-color: #3330;
-  }
-  /* Customize the scroll bar */
-  textarea::-webkit-scrollbar {
-    width: 8px; /* scrollbar width */
-  }
-
-  textarea::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0); /* track color */
-  }
-
-  textarea::-webkit-scrollbar-thumb {
-    background-color: #323232;
-    border-radius: 4px;
-  }
-
-  textarea:hover::-webkit-scrollbar-thumb {
-    background-color: #434343;
-  }
-
-  textarea::-webkit-scrollbar-thumb:hover {
-    background-color: #4f4f4f;
-  }
+textarea::-webkit-scrollbar-thumb:hover,
+ul::-webkit-scrollbar-thumb:hover {
+  background-color: #4f4f4f;
 }

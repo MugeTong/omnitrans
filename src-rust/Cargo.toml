@@ -1,0 +1,12 @@
+[package]
+name = "omnitrans_rust"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = "3"
+napi-derive = "3"
+rdev = "0.5"  # For global keyboard event listening
+lazy_static = "1.4" # For static initialization

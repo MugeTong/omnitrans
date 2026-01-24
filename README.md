@@ -1,30 +1,42 @@
-# Omnitrans
+# omnitrans
 
-One electron app which supports searching words anytime and anywhere. (Only supports windows now.)
+This template should help get you started developing with Vue 3 in Vite.
 
-<img src="docs/main_window.png" alt="img.png" style="zoom:50%;" />
+## Recommended IDE Setup
 
-## Quick Start
+[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-Download the latest package and install it.
-You can search any English text or Chinese text you see on the screen **Just By Pressing `Ctrl+C+C`**.
+## Recommended Browser Setup
 
-## Development
+- Chromium-based browsers (Chrome, Edge, Brave, etc.):
+  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
+  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
+- Firefox:
+  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
+  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
 
-Fork this repository and install the necessary packages. Then run the following commands:
+## Type Support for `.vue` Imports in TS
+
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+
+## Customize configuration
+
+See [Vite Configuration Reference](https://vite.dev/config/).
+
+## Project Setup
 
 ```sh
-npm run dev  # start the Vue service in one terminal
-npm start  # start the electron in another terminal
+npm install
 ```
 
-## Production
-
-Run the following commands to pack the application:
+### Compile and Hot-Reload for Development
 
 ```sh
-npm run build  # compile the Vue files
-npm run pack  # pack the electron app using electron-builder
+npm run dev
 ```
 
-After this, the `installer.exe` should be in your `./build` folder.
+### Type-Check, Compile and Minify for Production
+
+```sh
+npm run build
+```
