@@ -12,14 +12,21 @@ contextBridge.exposeInMainWorld("translationBridge", {
   },
 });
 
-contextBridge.exposeInMainWorld("clipboardBridge", {
+contextBridge.exposeInMainWorld("systemBridge", {
   readClipboard: async () => {
-    return await ipcRenderer.invoke("clipboard:readText");
+    return await ipcRenderer.invoke("system:readClipboard");
+  },
+  getCursorScreenPoint: async () => {
+    return await ipcRenderer.invoke("system:getCursorScreenPoint");
   },
 });
 
 contextBridge.exposeInMainWorld("windowBridge", {
+  showOmniWindow: async () => await ipcRenderer.invoke("window:showOmniWindow"),
   closeOmniWindow: async () => await ipcRenderer.invoke("window:closeOmniWindow"),
+  getOmniWindowSize: async () => await ipcRenderer.invoke("window:getOmniWindowSize"),
+  resizeOmniWindow: async (width: number, height: number) =>
+    await ipcRenderer.invoke("window:resizeOmniWindow", width, height),
 });
 
 // Every eventt should be used just once in each render process

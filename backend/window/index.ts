@@ -1,6 +1,10 @@
 import { ipcMain } from "electron";
 
+
 function registerWindowIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindow: Electron.BrowserWindow) {
+
+  const initialSize= omniWindow.getSize() as [number, number];
+
   ipcMain.handle("window:showOmniWindow", async (event) => {
     console.log("[window IPC] Showing omni window");
     omniWindow.show();
@@ -11,8 +15,13 @@ function registerWindowIpcHandlers(mainWindow: Electron.BrowserWindow, omniWindo
     omniWindow.close();
   });
 
-  ipcMain.handle("window:getOmniWindowBounds", async (event) => {
-    return omniWindow.getBounds();
+  ipcMain.handle("window:getOmniWindowSize", async (event) => {
+    return omniWindow.getSize();
+  });
+
+  ipcMain.handle("window:resizeOmniWindow", async (event, width: number, height: number) => {
+    omniWindow.setMinimumSize(...initialSize);
+    omniWindow.setSize(width, height);
   });
 }
 

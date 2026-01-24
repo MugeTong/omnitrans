@@ -99,7 +99,7 @@ textarea {
 
 .splitter {
   height: 100%;
-  width: 1px;
+  width: 2px;
   background-color: var(--color-separator);
 }
 </style>

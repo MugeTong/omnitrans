@@ -1,4 +1,4 @@
-import { app, BrowserWindow, clipboard, Menu, Tray, nativeTheme } from "electron";
+import { app, BrowserWindow, clipboard, Menu, Tray, nativeTheme, screen } from "electron";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { registerIpcHandlers, deregisterIpcHandlers } from "./backend";
@@ -12,10 +12,10 @@ let tray: Tray;
 
 async function createMainWindow() {
   mainWindow = new BrowserWindow({
-    width: 1200,
-    height: 800,
-    minHeight: 600,
-    minWidth: 960,
+    width: 800,
+    height: 500,
+    minWidth: 400,
+    minHeight: 270,
     show: false,
     backgroundColor: darkMode ? "#202020" : "#f3f3f3",
     titleBarStyle: "hidden",
@@ -64,9 +64,16 @@ async function createOminiWindow() {
     },
   });
 
-  // omniWindow.on("ready-to-show", () => {
-  //   omniWindow.show();
-  // });
+  omniWindow.on("show", () => {
+    const cursorPosition = screen.getCursorScreenPoint();
+    const factor = screen.getPrimaryDisplay().scaleFactor;
+    omniWindow.setBounds({
+      x: cursorPosition.x,
+      y: cursorPosition.y,
+      width: 420,
+      height: 240,
+    });
+  });
 
   omniWindow.on("blur", () => {
     omniWindow.minimize();
