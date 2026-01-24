@@ -22,11 +22,12 @@ onMounted(() => {
   );
 
   // detect the "Enter" key to invoke the search
-  leftArea.value.addEventListener("keydown", (e) => {
+  // TODO: find the event type and handle the "target" meaning for e.target
+  leftArea.value.addEventListener("keydown", (e: KeyboardEvent) => {
     // users can press "Shift + Enter" to input a newline
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault(); // prevent the newline
-      e.target.blur(); // make the textarea lose the focus
+      (e.target as HTMLTextAreaElement)?.blur(); // make the textarea lose the focus
       if (typingText.value.trim() === "") return; // blank exclusion
       historyStore.addText(typingText.value); // add the text to the history
       historyStore.invokeSearch(); // invoke the search
