@@ -3,14 +3,14 @@
 [![Electron](https://img.shields.io/badge/Electron-40.0.0-blue.svg)](https://www.electronjs.org/)
 [![Rust](https://img.shields.io/badge/Rust-1.92.0-orange.svg)](https://www.rust-lang.org/)
 [![Vue 3](https://img.shields.io/badge/Vue-3.5.27-brightgreen.svg)](https://vuejs.org/)
+[![license](https://img.shields.io/github/license/MugeTong/omnitrans)](LICENSE)
 [![release](https://img.shields.io/github/v/release/MugeTong/omnitrans?color=)](https://github.com/MugeTong/omnitrans/releases)
 [![downloads](https://img.shields.io/github/downloads/MugeTong/omnitrans/total)](https://github.com/MugeTong/omnitrans/releases)
-[![license](https://img.shields.io/github/license/MugeTong/omnitrans)](LICENSE)
 
 
 One electron app which supports searching words anytime and anywhere.
 
-![screenshot](./docs/screenshot.png)
+<img src="./docs/screenshot.png" alt="screenshot2" width="80%" style="display:block; margin-left:auto; margin-right:auto;"/>
 
 ## Features
 - Search for translations using multiple sources
