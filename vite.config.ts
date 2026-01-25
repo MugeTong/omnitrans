@@ -45,7 +45,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "out",
+    outDir: "out/render",
     emptyOutDir: true,
     rollupOptions: {
       input: {

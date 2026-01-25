@@ -1,11 +1,12 @@
 {
   "name": "omnitrans",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "private": true,
   "type": "module",
   "engines": {
     "node": "^20.19.0 || >=22.12.0"
   },
+  "description": "One electron app which supports searching words anytime and anywhere.",
   "author": {
     "name": "MUGE_TONG",
     "email": "here5320@gmail.com"
@@ -20,12 +21,39 @@
   "scripts": {
     "dev": "run-s build:rust watch:render",
     "watch:render": "vite",
-    "watch:rust": "napi build --watch --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
-    "build": "run-p build:rust build:render",
-    "build:render": "run-p type-check \"build-only {@}\" --",
+    "build:render": "run-p type-check \"build:render-only {@}\" --",
+    "build:render-only": "vite build",
     "build:rust": "napi build --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --noEmit"
+    "build:rust-release": "napi build --release --cwd src-rust --package-json-path ../package.json --output-dir ../out/rust",
+    "build": "run-s build:rust-release build:render",
+    "type-check": "vue-tsc --noEmit",
+    "pack": "electron-builder --dir"
+  },
+  "build": {
+    "appId": "com.nainote.omnitrans",
+    "productName": "Omnitrans",
+    "files": [
+      "out/**",
+      "package.json",
+      "LICENSE",
+      "README.md"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "./public/logo.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "./public/logo.ico",
+      "uninstallerIcon": "./public/logo.ico",
+      "installerHeaderIcon": "./public/logo.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Omnitrans"
+    }
   },
   "dependencies": {
     "axios": "^1.13.2",

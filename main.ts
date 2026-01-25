@@ -42,7 +42,8 @@ async function createMainWindow() {
   });
 
   if (app.isPackaged) {
-    mainWindow.loadFile(path.join(__dirname, "index.html"));
+    mainWindow.loadFile(path.join(__dirname, "./render/index.html"));
+    // mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL!);
     // mainWindow.webContents.openDevTools();
@@ -87,7 +88,8 @@ async function createOminiWindow() {
   });
 
   if (app.isPackaged) {
-    omniWindow.loadFile(path.join(__dirname, "omni.html"));
+    omniWindow.loadFile(path.join(__dirname, "./render/omni.html"));
+    // omniWindow.webContents.openDevTools();
   } else {
     omniWindow.loadURL(process.env.VITE_DEV_SERVER_URL! + "omni.html");
     omniWindow.webContents.openDevTools();
@@ -95,7 +97,7 @@ async function createOminiWindow() {
 }
 
 async function createTray() {
-  const trayIconPath = app.isPackaged ? path.join(__dirname, "logo.png") : path.join(__dirname, "../public/logo.png");
+  const trayIconPath = app.isPackaged ? path.join(__dirname, "./render/logo.png") : path.join(__dirname, "../public/logo.png");
   tray = new Tray(trayIconPath);
   tray.setToolTip("OmniTrans");
   tray.setContextMenu(
