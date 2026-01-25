@@ -9,9 +9,10 @@ lerna-debug.log*
 
 node_modules
 .DS_Store
-out
-dist
-target
+[Oo]ut
+[Oo]utput
+[Dd]ist
+[Tt]arget
 dist-ssr
 coverage
 *.local
