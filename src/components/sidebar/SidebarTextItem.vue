@@ -43,7 +43,7 @@ const isActive = computed(() => {
 }
 
 .sidebar-item:hover {
-  background-color: var(--color-bg-hover);
+  background-color: var(--color-btn-hover);
 }
 
 .sidebar-item-name {

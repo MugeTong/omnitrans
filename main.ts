@@ -14,8 +14,8 @@ async function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 500,
-    minWidth: 400,
-    minHeight: 270,
+    minWidth: 600,
+    minHeight: 400,
     show: false,
     backgroundColor: darkMode ? "#202020" : "#f3f3f3",
     titleBarStyle: "hidden",

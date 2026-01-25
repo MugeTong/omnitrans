@@ -13,8 +13,10 @@ onMounted(() => {
   <app-title-bar>
     <template #left>
       <sidebar>
-        <sidebar-text-item name="主页" routerName="home" />
-        <sidebar-text-item name="设置" routerName="settings" />
+        <sidebar-text-item name="workspace" routerName="home" />
+        <sidebar-text-item name="history" routerName="history" />
+        <sidebar-text-item name="wordbook" routerName="wordbook" />
+        <sidebar-text-item name="settings" routerName="settings" />
       </sidebar>
     </template>
   </app-title-bar>

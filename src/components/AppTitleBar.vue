@@ -54,8 +54,8 @@ const props = defineProps({
   align-items: center;
 
   .logo {
-    width: 28px;
-    height: 28px;
+    width: 20px;
+    height: 20px;
     margin-right: 10px;
     filter: drop-shadow(0 1px 2px rgba(222, 222, 222, 0.15));
     transition: transform 0.2s;
@@ -63,10 +63,9 @@ const props = defineProps({
 
   .title {
     color: var(--color-text-title);
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     text-align: center;
-    letter-spacing: 1px;
   }
 }
 

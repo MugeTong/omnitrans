@@ -25,6 +25,6 @@
   height: 100%;
   align-items: center;
   padding: 0 10px;
-  gap: 10px;
+  gap: 5px;
 }
 </style>
