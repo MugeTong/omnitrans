@@ -1,42 +1,36 @@
 # omnitrans
 
-This template should help get you started developing with Vue 3 in Vite.
+[![Electron](https://img.shields.io/badge/Electron-40.0.0-blue.svg)](https://www.electronjs.org/)
+[![Rust](https://img.shields.io/badge/Rust-1.92.0-orange.svg)](https://www.rust-lang.org/)
+[![Vue 3](https://img.shields.io/badge/Vue-3.5.27-brightgreen.svg)](https://vuejs.org/)
+[![release](https://img.shields.io/github/v/release/MugeTong/omnitrans?color=)](https://github.com/MugeTong/omnitrans/releases)
+[![downloads](https://img.shields.io/github/downloads/MugeTong/omnitrans/total)](https://github.com/MugeTong/omnitrans/releases)
+[![license](https://img.shields.io/github/license/MugeTong/omnitrans)](LICENSE)
 
-## Recommended IDE Setup
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+One electron app which supports searching words anytime and anywhere.
 
-## Recommended Browser Setup
+![screenshot](./docs/screenshot.png)
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+## Features
+- Search for translations using multiple sources
+- Global hotkey to bring up the search window
+- History of searched words
+- Favorites for frequently searched words
 
-## Type Support for `.vue` Imports in TS
+## Installation
+You can download the latest release from the [releases page](https://github.com/MugeTong/omnitrans/releases).
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Usage
+1. Launch the application.
+2. When you enconter sentences or words you want to translate, select and,
+2. Use the global hotkey (default: `Double Ctrl + C`) to open the search window.
 
-## Customize configuration
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+## Contributing
+Contributions are welcome! Please fork the repository and create a pull request with your changes.
 
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+## Acknowledgements
+- [DeepL (UI Reference)](https://www.deepl.com/)
+- [WinUI3 (UI Reference)](https://learn.microsoft.com/en-us/windows/apps/winui/winui3/)
+- [Youdao (Current Translator)](http://www.youdao.com/)
