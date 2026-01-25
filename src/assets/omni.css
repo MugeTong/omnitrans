@@ -11,10 +11,10 @@ html, body {
   height: calc(100vh - 32px);
   width: calc(100% - 32px);
   border-radius: 8px;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.089),
-  0 0 5px rgba(0, 0, 0, 0.112),
+  box-shadow:  0 0 5px rgba(0, 0, 0, 0.112),
   0 0 9px rgba(0, 0, 0, 0.123),
   0 0 13px rgba(0, 0, 0, 0.13);
   background-color: color-mix(in srgb, var(--color-bg-base), transparent 5%);
   -webkit-app-region: drag;
 }
+  

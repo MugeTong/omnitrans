@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { clipboard } from "electron";
 import { onMounted, onUnmounted } from "vue";
-import { ResizeIcon, CopyIcon } from "@/components/icons";
+import { ResizeIcon, CopyIcon, CloseIcon } from "@/components/icons";
 
 const omniText = defineModel("omniText", { type: String, default: "" });
 
@@ -18,12 +18,12 @@ const onWindowResize = async (event: MouseEvent) => {
   };
 
   const onMouseUp = () => {
-    document.removeEventListener('mousemove', onMouseMove);
-    document.removeEventListener('mouseup', onMouseUp);
+    document.removeEventListener("mousemove", onMouseMove);
+    document.removeEventListener("mouseup", onMouseUp);
   };
 
-  document.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('mouseup', onMouseUp);
+  document.addEventListener("mousemove", onMouseMove);
+  document.addEventListener("mouseup", onMouseUp);
 };
 
 const onCloseWindow = () => {
@@ -64,7 +64,7 @@ onMounted(() => {
       <img class="logo" src="/logo.svg" alt="Omnitrans Logo" />
       <div class="space" />
       <button class="close-btn" @click="onCloseWindow">
-        <img src="/close.svg" alt="Close" />
+        <close-icon />
       </button>
     </div>
 
@@ -99,7 +99,6 @@ main {
 
 .title-bar,
 .option-bar {
-  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,8 +106,9 @@ main {
 }
 
 .logo {
-  height: 32px;
-  width: 32px;
+  height: 20px;
+  width: 20px;
+  user-select: none;
 }
 
 .space {
@@ -117,19 +117,20 @@ main {
 }
 
 .close-btn {
-  height: 100%;
-  width: 36px;
-  border: none;
+  height: 24px;
+  width: 24px;
   border-radius: 5px;
   cursor: pointer;
+  user-select: none;
   -webkit-app-region: no-drag;
   display: flex;
   justify-content: center;
   align-items: center;
 
-  img {
-    height: 70%;
-    width: 70%;
+  svg {
+    height: 16px;
+    width: 16px;
+    color: var(--color-text-lighter);
   }
 }
 
@@ -152,21 +153,21 @@ textarea.omni-result {
 
 .option-bar button {
   height: 100%;
-  margin: 5px 10px 0 0;
-  padding: 5px 10px;
+  padding: 5px 5px;
   text-wrap: nowrap;
-  font-size: 16px;
-  font-weight: bolder;
+  font-size: 14px;
+  font-weight: bold;
   border-radius: 5px;
   cursor: pointer;
+  user-select: none;
   -webkit-app-region: no-drag;
   display: flex;
   justify-content: center;
   align-items: center;
 
   img {
-    height: 80%;
-    width: 80%;
+    height: 12px;
+    width: 12px;
     margin-right: 5px;
   }
 }
