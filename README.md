@@ -10,7 +10,9 @@
 
 One electron app which supports searching words anytime and anywhere.
 
-<img src="./docs/screenshot.png" alt="screenshot2" width="80%" style="display:block; margin-left:auto; margin-right:auto;"/>
+<div style="text-align:center">
+  <img src="./docs/screenshot.png" alt="screenshot2" width="80%"/>
+</div>
 
 ## Features
 - Search for translations using multiple sources
