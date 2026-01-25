@@ -99,13 +99,13 @@ async function createOminiWindow() {
 async function createTray() {
   const trayIconPath = app.isPackaged ? path.join(__dirname, "./render/logo.png") : path.join(__dirname, "../public/logo.png");
   tray = new Tray(trayIconPath);
-  tray.setToolTip("OmniTrans");
+  tray.setToolTip("Omnitrans");
   tray.setContextMenu(
     Menu.buildFromTemplate([
       {
         label: `复制应用信息：Omnitrans ${app.getVersion()}`,
         click: () => {
-          clipboard.writeText(`OmniTrans ${app.getVersion()}`);
+          clipboard.writeText(`Omnitrans ${app.getVersion()}`);
           console.log("[system] Application info copied to clipboard.");
         },
       },
